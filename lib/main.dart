@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/sdg96/AndroidStudioProjects/haru_app/lib/pages/account/login.dart';
+import 'package:haruapp/pages/account/login.dart';
 
 void main() {
   runApp(MyApp());
