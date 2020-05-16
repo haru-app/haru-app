@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/main/home.dart';
+import 'package:haruapp/pages/auth/login.dart';
+import 'package:haruapp/utils/config.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Config().loadConfig();
+  print(Config.get());
   runApp(MyApp());
 }
 

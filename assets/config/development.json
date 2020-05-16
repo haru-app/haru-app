@@ -1,0 +1,9 @@
+{
+  "url": {
+    "api": {
+      "isHttps": false,
+      "base": "10.0.2.2:5000",
+      "last": "/api"
+    }
+  }
+}

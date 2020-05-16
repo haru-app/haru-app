@@ -23,7 +23,10 @@ class TopBar extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     print('asdfasdfasdf');
-                    SearchScreen();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SearchScreen()));
                   },
                   child: Container(
                     child: Icon(

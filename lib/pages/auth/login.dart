@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:haruapp/services/auth/login_service.dart';
+import 'package:haruapp/utils/http_client.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -51,7 +53,9 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                LoginService().login('test', 'test');
+              },
               color: Colors.blue,
               child: Text(
                 '로그인',
