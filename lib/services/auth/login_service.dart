@@ -1,4 +1,5 @@
 import 'package:haruapp/utils/http_client.dart';
+import 'package:haruapp/utils/response_result.dart';
 import 'package:http/http.dart';
 
 class LoginService {
@@ -10,9 +11,9 @@ class LoginService {
 
   void login(String email, String password) async {
     final parameters = {'email': email, 'password': password};
-    Response result =
-        await httpClient.get('/auth/login', parameters: parameters);
-    print(result.statusCode);
-    print(result.body);
+    ResponseResult result =
+        await httpClient.jsonGet('/auth/login', parameters: parameters);
+    print(result.response.statusCode);
+    print(result.json);
   }
 }
