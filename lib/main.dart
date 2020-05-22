@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haruapp/pages/main/home.dart';
 import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/utils/config.dart';
+import 'package:haruapp/widgets/common/top_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

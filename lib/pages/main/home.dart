@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/pages/main/setting_page.dart';
+import 'package:haruapp/pages/main/MY_page.dart';
+import 'package:haruapp/pages/main/friends_list.dart';
+import 'package:haruapp/pages/main/setting.dart';
 import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 
@@ -25,32 +27,24 @@ class _HomePageState extends State<HomePage> {
                       child: Text('Home'),
                     ),
                   ),
-                  TopBar(),
+                  //TopBar(),
                 ],
               ),
               Stack(
                 children: <Widget>[
-                  Container(
-                    child: Center(
-                      child: Text('MY'),
-                    ),
-                  ),
-                  TopBar(),
+                  //MYPage(),
+                  //TopBar(),
                 ],
               ),
               Stack(
                 children: <Widget>[
-                  Container(
-                    child: Center(
-                      child: Text('Friend'),
-                    ),
-                  ),
-                  TopBar(),
+                  FriendsPage(),
+                  //TopBar(),
                 ],
               ),
               Stack(
                 children: <Widget>[
-                  Setting_page(),
+                  SettingPage(),
                   TopBar(),
                 ],
               )
