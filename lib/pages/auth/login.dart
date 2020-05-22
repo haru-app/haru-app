@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/services/auth/login_service.dart';
 import 'package:haruapp/utils/http_client.dart';
 
@@ -23,18 +24,14 @@ class LoginPage extends StatelessWidget {
               children: <Widget>[
                 TextFormField(
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey)),
-                      labelText: 'Email'),
+                      border: OutlineInputBorder(), labelText: 'Email'),
                 ),
                 SizedBox(
                   height: 25,
                 ),
                 TextFormField(
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey)),
-                      labelText: 'Password'),
+                      border: OutlineInputBorder(), labelText: 'Password'),
                 )
               ],
             )),
@@ -67,7 +64,7 @@ class LoginPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print('회원가입');
+                Navigator.pushNamed(context, '/register');
               },
               child: Text(
                 '계정이 없으신가요?',

@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:haruapp/utils/config.dart';
+import 'package:haruapp/utils/response_result.dart';
 import 'package:http/http.dart';
 
 class HttpClient extends BaseClient {
@@ -24,6 +24,7 @@ class HttpClient extends BaseClient {
   }
 
   Future<StreamedResponse> send(BaseRequest request) {
+    request.headers['Content-Type'] = 'application/json; charset=utf-8';
     return this._client.send(request);
   }
 
@@ -50,7 +51,38 @@ class HttpClient extends BaseClient {
   @override
   Future<Response> get(url,
       {Map<String, String> headers, Map<String, dynamic> parameters}) {
-    print(this.uri(url, parameters).toString());
     return super.get(this.uri(url, parameters), headers: headers);
+  }
+
+  Future<ResponseResult> jsonDelete(url,
+      {Map<String, String> headers, Map<String, dynamic> parameters}) async {
+    Response response =
+        await super.delete(this.uri(url, parameters), headers: headers);
+    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    return ResponseResult(response, json);
+  }
+
+  Future<ResponseResult> jsonPut(url,
+      {Map<String, String> headers, body, Encoding encoding}) async {
+    Response response = await super.put(this._baseUrl + url,
+        headers: headers, body: body, encoding: encoding);
+    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    return ResponseResult(response, json);
+  }
+
+  Future<ResponseResult> jsonPost(url,
+      {Map<String, String> headers, body, Encoding encoding}) async {
+    Response response = await super.post(this._baseUrl + url,
+        headers: headers, body: body, encoding: encoding);
+    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    return ResponseResult(response, json);
+  }
+
+  Future<ResponseResult> jsonGet(url,
+      {Map<String, String> headers, Map<String, dynamic> parameters}) async {
+    Response response =
+        await super.get(this.uri(url, parameters), headers: headers);
+    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    return ResponseResult(response, json);
   }
 }
