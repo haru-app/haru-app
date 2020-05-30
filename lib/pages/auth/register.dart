@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/auth/login_service.dart';
 import 'package:haruapp/utils/http_client.dart';
+import 'package:haruapp/widgets/common/input_box.dart';
+import 'package:haruapp/widgets/common/input_form.dart';
 
 class RegisterPage extends StatelessWidget {
+  InputForm _inputForm;
   @override
   Widget build(BuildContext context) {
+    _inputForm = this.registerForm();
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -23,44 +27,7 @@ class RegisterPage extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
-              Form(
-                  child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Email'),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Password'),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password Confirm'),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Username'),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Birthday'),
-                  )
-                ],
-              )),
+              _inputForm,
               SizedBox(
                 height: 20,
               ),
@@ -91,5 +58,38 @@ class RegisterPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget registerForm() {
+    return InputForm(
+        child: Column(children: <Widget>[
+      InputBox(
+        name: 'email',
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      InputBox(
+        name: 'Password',
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      InputBox(
+        name: 'Password Confirm',
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      InputBox(
+        name: 'Username',
+      ),
+      SizedBox(
+        height: 15,
+      ),
+      InputBox(
+        name: 'Birthday',
+      )
+    ]));
   }
 }
