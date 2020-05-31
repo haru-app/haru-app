@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/auth/login_service.dart';
 import 'package:haruapp/utils/http_client.dart';
+import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 
 class RegisterPage extends StatelessWidget {
   InputForm _inputForm;
+  InputBox _emailInput;
+  InputBox _passwordInput;
+  InputBox _passwordConfirmInput;
+  InputBox _usernameInput;
+  InputBox _birthdayInput;
   @override
   Widget build(BuildContext context) {
     _inputForm = this.registerForm();
@@ -33,7 +39,7 @@ class RegisterPage extends StatelessWidget {
               ),
               RaisedButton(
                 onPressed: () {
-                  LoginService().login('test', 'test');
+                  _inputForm.validate();
                 },
                 color: Colors.blue,
                 child: Text(
@@ -61,35 +67,54 @@ class RegisterPage extends StatelessWidget {
   }
 
   Widget registerForm() {
+    this._emailInput = InputBox(
+      name: '이메일',
+      inputType: InputType.STRING,
+      validator: (String v) => Validator([vEmail()], v).validate(),
+    );
+    this._passwordInput = InputBox(
+      name: '비밀번호',
+      inputType: InputType.STRING,
+      validator: (String v) => Validator([vPassword()], v).validate(),
+      obscureText: true,
+    );
+    this._passwordConfirmInput = InputBox(
+      name: '비밀번호 확인',
+      inputType: InputType.STRING,
+      validator: (String v) =>
+          Validator([vPasswordConfirm(this._passwordInput.value)], v)
+              .validate(),
+      obscureText: true,
+    );
+    this._usernameInput = InputBox(
+      name: '이름',
+      inputType: InputType.STRING,
+      validator: (String v) => Validator([vUsername()], v).validate(),
+    );
+    this._birthdayInput = InputBox(
+      name: '생일',
+      inputType: InputType.DATE,
+      validator: (String v) => Validator([vIsRequired()], v).validate(),
+    );
     return InputForm(
         child: Column(children: <Widget>[
-      InputBox(
-        name: 'email',
-      ),
+      this._emailInput,
       SizedBox(
         height: 15,
       ),
-      InputBox(
-        name: 'Password',
-      ),
+      this._passwordInput,
       SizedBox(
         height: 15,
       ),
-      InputBox(
-        name: 'Password Confirm',
-      ),
+      this._passwordConfirmInput,
       SizedBox(
         height: 15,
       ),
-      InputBox(
-        name: 'Username',
-      ),
+      this._usernameInput,
       SizedBox(
         height: 15,
       ),
-      InputBox(
-        name: 'Birthday',
-      )
+      this._birthdayInput,
     ]));
   }
 }

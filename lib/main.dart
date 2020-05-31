@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/pages/router.dart';
@@ -23,6 +24,14 @@ class MyApp extends StatelessWidget {
       ),
       home: LoginPage(),
       routes: routes,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('ko', 'KR'),
+        const Locale('en', 'US'),
+      ],
     );
   }
 }
