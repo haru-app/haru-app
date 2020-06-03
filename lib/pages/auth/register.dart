@@ -1,5 +1,6 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:haruapp/services/auth/login_service.dart';
+import 'package:haruapp/services/auth/auth_service.dart';
 import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
@@ -39,7 +40,31 @@ class RegisterPage extends StatelessWidget {
               ),
               RaisedButton(
                 onPressed: () {
-                  _inputForm.validate();
+                  Flushbar(
+                    message: "성공적으로 회원가입이 되었습니다.",
+                    backgroundGradient:
+                        //LinearGradient(colors: [Colors.red, Colors.pinkAccent]),
+                        LinearGradient(colors: [Colors.blue, Colors.cyan]),
+                    //LinearGradient(colors: [Colors.green, Colors.greenAccent]),
+                    backgroundColor: Colors.red,
+                    boxShadows: [
+                      BoxShadow(
+                        color: Colors.blue[800],
+                        offset: Offset(0.0, 2.0),
+                        blurRadius: 3.0,
+                      )
+                    ],
+                    margin: EdgeInsets.all(8),
+                    borderRadius: 8,
+                    duration: Duration(seconds: 2),
+                  ).show(context);
+                  if (!this._inputForm.validate()) return;
+                  AuthService authService = AuthService();
+                  authService.register(
+                      email: this._emailInput.value,
+                      password: this._passwordInput.value,
+                      username: this._usernameInput.value,
+                      birthday: this._birthdayInput.value);
                 },
                 color: Colors.blue,
                 child: Text(

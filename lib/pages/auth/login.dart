@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/register.dart';
-import 'package:haruapp/services/auth/login_service.dart';
+import 'package:haruapp/services/auth/auth_service.dart';
 import 'package:haruapp/utils/http_client.dart';
 
 class LoginPage extends StatelessWidget {
@@ -51,7 +51,7 @@ class LoginPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                LoginService().login('test', 'test');
+                AuthService().login('test', 'test');
               },
               color: Colors.blue,
               child: Text(
