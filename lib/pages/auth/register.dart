@@ -1,7 +1,5 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/auth/auth_service.dart';
-import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
@@ -14,6 +12,7 @@ class RegisterPage extends StatelessWidget {
   InputBox _passwordConfirmInput;
   InputBox _usernameInput;
   InputBox _birthdayInput;
+
   @override
   Widget build(BuildContext context) {
     _inputForm = this.registerForm();
@@ -40,15 +39,22 @@ class RegisterPage extends StatelessWidget {
                 height: 20,
               ),
               RaisedButton(
-                onPressed: () {
-                  if (!this._inputForm.validate()) return;
-                  AuthService authService = AuthService();
-                  authService.register(
+                onPressed: () async {
+                  if (!this._inputForm.validate()) {
+                    AlertBar(
+                            type: AlertType.error,
+                            message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                            context: context)
+                        .show();
+                    return;
+                  }
+                  AuthService authService = AuthService(context: context);
+                  if (!await authService.register(
                       email: this._emailInput.value,
                       password: this._passwordInput.value,
                       username: this._usernameInput.value,
-                      birthday: this._birthdayInput.value);
-                  Navigator.pop(context,'success');
+                      birthday: this._birthdayInput.value)) return;
+                  Navigator.pop(context, 'registerSuccess');
                 },
                 color: Colors.blue,
                 child: Text(

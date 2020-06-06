@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/services/auth/auth_service.dart';
-import 'package:haruapp/utils/http_client.dart';
+import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
+import 'package:haruapp/widgets/common/input_box.dart';
+import 'package:haruapp/widgets/common/input_form.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  InputForm _inputForm;
+  InputBox _emailInput;
+  InputBox _passwordInput;
+
   @override
   Widget build(BuildContext context) {
+    this._inputForm = this.loginForm();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(right: 40, left: 40),
@@ -20,22 +31,10 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               height: 50,
             ),
-            Form(
-                child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Email'),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), labelText: 'Password'),
-                )
-              ],
-            )),
+            _inputForm,
+            SizedBox(
+              height: 25,
+            ),
             Container(
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
@@ -52,8 +51,17 @@ class LoginPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/main');
-                AuthService().login('test', 'test');
+                //Navigator.pushNamed(context, '/main');
+                if (!this._inputForm.validate()) {
+                  AlertBar(
+                          type: AlertType.error,
+                          message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                          context: context)
+                      .show();
+                  return;
+                }
+                AuthService(context: context)
+                    .login(this._emailInput.value, this._passwordInput.value);
               },
               color: Colors.blue,
               child: Text(
@@ -69,7 +77,7 @@ class LoginPage extends StatelessWidget {
                 final result = await Navigator.pushNamed(context, '/register');
                 if (result != null) {
                   print(result);
-                  if (result == 'success') {
+                  if (result == 'registerSuccess') {
                     AlertBar(
                             type: AlertType.success,
                             message: '성공적으로 회원가입이 되었습니다.',
@@ -87,5 +95,29 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  InputForm loginForm() {
+    this._emailInput = InputBox(
+      name: '이메일',
+      inputType: InputType.STRING,
+      validator: (String v) =>
+          Validator([vIsRequired(errorText: '이메일을 입력해주세요.')], v).validate(),
+    );
+    this._passwordInput = InputBox(
+      name: '비밀번호',
+      inputType: InputType.STRING,
+      validator: (String v) =>
+          Validator([vIsRequired(errorText: '비밀번호를 입력해주세요.')], v).validate(),
+      obscureText: true,
+    );
+    return InputForm(
+        child: Column(children: <Widget>[
+      this._emailInput,
+      SizedBox(
+        height: 25,
+      ),
+      this._passwordInput,
+    ]));
   }
 }

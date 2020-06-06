@@ -1,3 +1,5 @@
+import 'package:haruapp/services/auth/auth_service.dart';
+
 class Validator {
   List<Function> _validatorList;
   String _value;
