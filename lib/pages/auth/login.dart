@@ -1,9 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/services/auth/auth_service.dart';
-import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
@@ -55,8 +51,17 @@ class _LoginPageState extends State<LoginPage> {
             ),
             RaisedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/main');
-                AuthService().login('test', 'test');
+                //Navigator.pushNamed(context, '/main');
+                if (!this._inputForm.validate()) {
+                  AlertBar(
+                          type: AlertType.error,
+                          message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                          context: context)
+                      .show();
+                  return;
+                }
+                AuthService(context: context)
+                    .login(this._emailInput.value, this._passwordInput.value);
               },
               color: Colors.blue,
               child: Text(
@@ -96,10 +101,14 @@ class _LoginPageState extends State<LoginPage> {
     this._emailInput = InputBox(
       name: '이메일',
       inputType: InputType.STRING,
+      validator: (String v) =>
+          Validator([vIsRequired(errorText: '이메일을 입력해주세요.')], v).validate(),
     );
     this._passwordInput = InputBox(
       name: '비밀번호',
       inputType: InputType.STRING,
+      validator: (String v) =>
+          Validator([vIsRequired(errorText: '비밀번호를 입력해주세요.')], v).validate(),
       obscureText: true,
     );
     return InputForm(

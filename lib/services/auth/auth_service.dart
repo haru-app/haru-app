@@ -1,19 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/response_result.dart';
-import 'package:http/http.dart';
 
 class AuthService {
-  AuthService() {}
+  BuildContext _context;
+  HttpClient _apiClient;
+  AuthService({BuildContext context}) {
+    this._context = context;
+    this._apiClient = HttpClient(type: 'api', context: _context);
+  }
 
   void login(String email, String password) async {
     final parameters = {'email': email, 'password': password};
     ResponseResult result =
-        await HttpClient('api').jsonGet('/auth/login', parameters: parameters);
+        await _apiClient.jsonGet('/auth/login', parameters: parameters);
     print(result.response.statusCode);
     print(result.json);
   }
 
-  void register(
+  Future<bool> register(
       {String email,
       String password,
       String username,
@@ -25,8 +30,23 @@ class AuthService {
       'birthday': birthday
     };
     ResponseResult result =
-        await HttpClient('api').jsonPost('/auth/register', body: body);
-    print(result.response.statusCode);
-    print(result.json);
+        await _apiClient.jsonPost('/auth/register', body: body);
+
+    if (result.response.statusCode == 200) return true;
+    return false;
+  }
+
+  Future<bool> duplicateEmail({
+    String email,
+  }) async {
+    final parameters = {
+      'email': email,
+    };
+    ResponseResult result = await _apiClient.jsonGet('/user/email/duplicate',
+        parameters: parameters);
+
+    if (result.response.statusCode == 200 && result.json['isDuplicateEmail'])
+      return true;
+    return false;
   }
 }

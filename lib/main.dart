@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/auth/login.dart';
-import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/pages/router.dart';
 import 'package:haruapp/utils/config.dart';
-import 'package:haruapp/widgets/common/top_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Config().loadConfig();
-  print(Config.get());
   runApp(MyApp());
 }
 

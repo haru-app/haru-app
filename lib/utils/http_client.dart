@@ -2,16 +2,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:haruapp/utils/config.dart';
 import 'package:haruapp/utils/response_result.dart';
+import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:http/http.dart';
 
 class HttpClient extends BaseClient {
   final Client _client = Client();
-  final String _type;
+  String _type;
+  BuildContext _context;
   String _baseUrl;
   String _lastUrl;
   bool _isHttps;
 
-  HttpClient(this._type) {
+  HttpClient({@required String type, @required BuildContext context}) {
+    this._type = type;
+    this._context = context;
     this._baseUrl = Config.get()['url'][_type]['base'];
     this._lastUrl = Config.get()['url'][_type]['last'];
     this._isHttps = Config.get()['url'][_type]['isHttps'];
@@ -41,16 +45,24 @@ class HttpClient extends BaseClient {
 
   @override
   Future<Response> put(url,
-      {Map<String, String> headers, body, Encoding encoding}) {
+      {Map<String, String> headers, body, Encoding encoding, bool isJson}) {
     return super.put(this.uri(url: url),
-        headers: headers, body: parameterConvertor(body), encoding: encoding);
+        headers: headers,
+        body: isJson
+            ? JsonEncoder().convert(parameterConvertor(body))
+            : parameterConvertor(body),
+        encoding: encoding);
   }
 
   @override
   Future<Response> post(url,
-      {Map<String, String> headers, body, Encoding encoding}) {
+      {Map<String, String> headers, body, Encoding encoding, bool isJson}) {
     return super.post(this.uri(url: url),
-        headers: headers, body: parameterConvertor(body), encoding: encoding);
+        headers: headers,
+        body: isJson
+            ? JsonEncoder().convert(parameterConvertor(body))
+            : parameterConvertor(body),
+        encoding: encoding);
   }
 
   @override
@@ -63,10 +75,18 @@ class HttpClient extends BaseClient {
 
   Future<ResponseResult> jsonDelete(String url,
       {Map<String, String> headers, Map<String, dynamic> parameters}) async {
-    Response response = await super.delete(
-        this.uri(url: url, parameters: parameterConvertor(parameters)),
-        headers: headers);
+    Response response =
+        await this.delete(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 422 || response.statusCode == 500) {
+      AlertBar(
+              type: AlertType.error,
+              message: json['errorMessage'],
+              context: this._context)
+          .show();
+    }
+
     return ResponseResult(response, json);
   }
 
@@ -74,11 +94,18 @@ class HttpClient extends BaseClient {
       {Map<String, String> headers,
       Map<String, dynamic> body,
       Encoding encoding}) async {
-    Response response = await super.put(this.uri(url: url),
-        headers: headers,
-        body: JsonEncoder().convert(parameterConvertor(body)),
-        encoding: encoding);
+    Response response = await this.put(url,
+        headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 422 || response.statusCode == 500) {
+      AlertBar(
+              type: AlertType.error,
+              message: json['errorMessage'],
+              context: this._context)
+          .show();
+    }
+
     return ResponseResult(response, json);
   }
 
@@ -86,20 +113,35 @@ class HttpClient extends BaseClient {
       {Map<String, String> headers,
       Map<String, dynamic> body,
       Encoding encoding}) async {
-    Response response = await super.post(this.uri(url: url),
-        headers: headers,
-        body: JsonEncoder().convert(parameterConvertor(body)),
-        encoding: encoding);
+    Response response = await this.post(url,
+        headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 422 || response.statusCode == 500) {
+      AlertBar(
+              type: AlertType.error,
+              message: json['errorMessage'],
+              context: this._context)
+          .show();
+    }
+
     return ResponseResult(response, json);
   }
 
   Future<ResponseResult> jsonGet(String url,
       {Map<String, String> headers, Map<String, dynamic> parameters}) async {
-    Response response = await super.get(
-        this.uri(url: url, parameters: parameterConvertor(parameters)),
-        headers: headers);
+    Response response =
+        await this.get(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 422 || response.statusCode == 500) {
+      AlertBar(
+              type: AlertType.error,
+              message: json['errorMessage'],
+              context: this._context)
+          .show();
+    }
+
     return ResponseResult(response, json);
   }
 
@@ -122,7 +164,7 @@ class HttpClient extends BaseClient {
       else
         convertParams[key] = value;
     });
-    print(convertParams);
+
     return convertParams;
   }
 }
