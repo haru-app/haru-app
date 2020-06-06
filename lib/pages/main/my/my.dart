@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:haruapp/widgets/common/input_box.dart';
+import 'package:haruapp/widgets/common/input_form.dart';
 
 class MYPage extends StatefulWidget {
   @override
@@ -33,25 +35,11 @@ class _MYPageState extends State<MYPage> {
       ),
     ));
   }
-
-  void showAlertDialog(BuildContext context) async {
-    String result = await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              '새 일기장 만들기',
-              style: TextStyle(fontSize: 10),
-            ),
-            content: Text(""),
-            actions: <Widget>[FlatButton(), FlatButton()],
-          );
-        });
-  }
 }
 
 class _MYProfile extends StatelessWidget {
+  InputForm _inputForm;
+  InputBox _nameInput;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -105,7 +93,9 @@ class _MYProfile extends StatelessWidget {
                 width: 10,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  showAlertDialog(context);
+                },
                 child: Container(
                   child: Column(
                     children: <Widget>[
@@ -121,6 +111,106 @@ class _MYProfile extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void showAlertDialog(BuildContext context) async {
+    String _value = '0';
+    String _iconValue = '0';
+    String result = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          _inputForm = this.nameInputForm();
+          return AlertDialog(
+            title: Text(
+              '새 일기장 만들기',
+              style: TextStyle(fontSize: 20),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                _inputForm,
+                SizedBox(height: 30),
+                Text('최대 공개 범위'),
+                SizedBox(height: 5),
+                DropdownButton<String>(
+                  items: [
+                    DropdownMenuItem<String>(
+                      child: Text('비공개'),
+                      value: '0',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('친구 공개'),
+                      value: '1',
+                    ),
+                    DropdownMenuItem<String>(
+                      child: Text('전체 공개'),
+                      value: '2',
+                    )
+                  ],
+                  onChanged: (String value) {
+                    _value = value;
+                  },
+                  value: _value,
+                ),
+                SizedBox(height: 20),
+                Text('아이콘 선택'),
+                SizedBox(height: 5),
+                DropdownButton<String>(
+                    items: [
+                      DropdownMenuItem<String>(
+                        child: Text('비공개'),
+                        value: 'S',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('친구 공개'),
+                        value: 'F',
+                      ),
+                      DropdownMenuItem<String>(
+                        child: Text('전체 공개'),
+                        value: 'A',
+                      )
+                    ],
+                    onChanged: (String value) {
+                      _iconValue = value;
+                    },
+                    value: _iconValue)
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('확인'),
+                onPressed: () {
+                  Navigator.pop(context, '확인');
+                },
+              ),
+              FlatButton(
+                child: Text('취소'),
+                onPressed: () {
+                  Navigator.pop(context, '취소');
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  InputForm nameInputForm() {
+    this._nameInput = InputBox(
+      name: '일기장 이름',
+      inputType: InputType.STRING,
+    );
+    return InputForm(
+      child: Column(
+        children: <Widget>[
+          this._nameInput,
+          SizedBox(
+            width: 3,
+          )
+        ],
+      ),
     );
   }
 }
