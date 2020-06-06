@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:haruapp/widgets/common/top_bar.dart';
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -9,17 +10,21 @@ class FriendsPage extends StatefulWidget {
 class _FriendsPageState extends State<FriendsPage> {
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-      return GridView.count(
-        padding: EdgeInsets.only(top: 120),
-        crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-        children: List.generate(orientation == Orientation.portrait ? 12 : 10,
-            (position) {
-          return _Profile();
+    return Scaffold(
+      body: SafeArea(
+        child: OrientationBuilder(
+            builder: (BuildContext context, Orientation orientation) {
+          return GridView.count(
+            padding: EdgeInsets.only(top: 25),
+            crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
+            children: List.generate(
+                orientation == Orientation.portrait ? 12 : 10, (position) {
+              return _Profile();
+            }),
+          );
         }),
-      );
-    });
+      ),
+    );
   }
 }
 

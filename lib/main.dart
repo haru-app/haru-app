@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/pages/auth/register.dart';
+import 'package:haruapp/pages/main/home.dart';
 import 'package:haruapp/pages/router.dart';
 import 'package:haruapp/utils/config.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: Home(),
       routes: routes,
     );
   }
