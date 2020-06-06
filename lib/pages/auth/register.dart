@@ -1,9 +1,6 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/auth/auth_service.dart';
-import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/validator.dart';
-import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 
@@ -14,6 +11,7 @@ class RegisterPage extends StatelessWidget {
   InputBox _passwordConfirmInput;
   InputBox _usernameInput;
   InputBox _birthdayInput;
+
   @override
   Widget build(BuildContext context) {
     _inputForm = this.registerForm();
@@ -48,7 +46,7 @@ class RegisterPage extends StatelessWidget {
                       password: this._passwordInput.value,
                       username: this._usernameInput.value,
                       birthday: this._birthdayInput.value);
-                  Navigator.pop(context,'success');
+                  Navigator.pop(context, 'registerSuccess');
                 },
                 color: Colors.blue,
                 child: Text(
