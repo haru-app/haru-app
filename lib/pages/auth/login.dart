@@ -52,6 +52,7 @@ class LoginPage extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/main');
                 AuthService().login('test', 'test');
               },
               color: Colors.blue,
@@ -66,12 +67,15 @@ class LoginPage extends StatelessWidget {
             GestureDetector(
               onTap: () async {
                 final result = await Navigator.pushNamed(context, '/register');
-                if(result != null) {
+                if (result != null) {
                   print(result);
-                  if(result == 'success') {
-                    AlertBar(type: AlertType.success, message: '성공적으로 회원가입이 되었습니다.', context: context).show();
+                  if (result == 'success') {
+                    AlertBar(
+                            type: AlertType.success,
+                            message: '성공적으로 회원가입이 되었습니다.',
+                            context: context)
+                        .show();
                   }
-
                 }
               },
               child: Text(
