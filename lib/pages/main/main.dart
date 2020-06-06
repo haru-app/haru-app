@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/pages/main/my_page.dart';
-import 'package:haruapp/pages/main/friends_list.dart';
-import 'package:haruapp/pages/main/home_page.dart';
-import 'package:haruapp/pages/main/setting.dart';
+import 'file:///C:/Users/home/Desktop/haru_app/lib/pages/main/my/my.dart';
+import 'file:///C:/Users/home/Desktop/haru_app/lib/pages/main/friends/friends_list.dart';
+import 'file:///C:/Users/home/Desktop/haru_app/lib/pages/main/home/home.dart';
+import 'file:///C:/Users/home/Desktop/haru_app/lib/pages/main/setting/setting.dart';
 import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 

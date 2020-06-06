@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             RaisedButton(
               onPressed: () {
+                Navigator.pushNamed(context, '/main');
                 AuthService().login('test', 'test');
               },
               color: Colors.blue,
