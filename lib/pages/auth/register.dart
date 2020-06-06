@@ -41,7 +41,6 @@ class RegisterPage extends StatelessWidget {
               ),
               RaisedButton(
                 onPressed: () {
-                  AlertBar(type: alertType.success, message: '성공적으로 회원가입이 되었습니다.', context: context).show();
                   if (!this._inputForm.validate()) return;
                   AuthService authService = AuthService();
                   authService.register(
@@ -49,6 +48,7 @@ class RegisterPage extends StatelessWidget {
                       password: this._passwordInput.value,
                       username: this._usernameInput.value,
                       birthday: this._birthdayInput.value);
+                  Navigator.pop(context,'success');
                 },
                 color: Colors.blue,
                 child: Text(

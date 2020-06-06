@@ -1,19 +1,19 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
-enum alertType {
+enum AlertType {
   info,
   error,
   success
 }
 
 class AlertBar {
-  alertType _type;
+  AlertType _type;
   String _message;
   Flushbar _flushbar;
   BuildContext _context;
 
-  AlertBar({@required alertType type, String message, BuildContext context}){
+  AlertBar({@required AlertType type, String message, BuildContext context}){
     this._type = type;
     this._message = message;
     this._context = context;
@@ -24,17 +24,17 @@ class AlertBar {
     Map<String, Color> color = Map<String, Color>();
 
     switch(this._type) {
-      case alertType.info:
+      case AlertType.info:
         color['main'] = Colors.blue;
         color['sub'] = Colors.cyan;
         color['shadow'] = Colors.blue[800];
         break;
-      case alertType.error:
+      case AlertType.error:
         color['main'] = Colors.red;
         color['sub'] = Colors.pinkAccent;
         color['shadow'] = Colors.red[800];
         break;
-      case alertType.success:
+      case AlertType.success:
         color['main'] = Colors.green;
         color['sub'] = Colors.greenAccent;
         color['shadow'] = Colors.green[800];

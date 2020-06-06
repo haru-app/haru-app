@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/register.dart';
 import 'package:haruapp/services/auth/auth_service.dart';
 import 'package:haruapp/utils/http_client.dart';
+import 'package:haruapp/widgets/common/alert_bar.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -63,8 +64,15 @@ class LoginPage extends StatelessWidget {
               height: 20,
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, '/register');
+              onTap: () async {
+                final result = await Navigator.pushNamed(context, '/register');
+                if(result != null) {
+                  print(result);
+                  if(result == 'success') {
+                    AlertBar(type: AlertType.success, message: '성공적으로 회원가입이 되었습니다.', context: context).show();
+                  }
+
+                }
               },
               child: Text(
                 '계정이 없으신가요?',
