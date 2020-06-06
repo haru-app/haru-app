@@ -6,12 +6,12 @@ import 'package:haruapp/pages/main/setting.dart';
 import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 
-class Home extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _HomeState extends State<Home> {
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
