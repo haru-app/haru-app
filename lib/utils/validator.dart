@@ -1,4 +1,4 @@
-import 'package:haruapp/services/auth/auth_service.dart';
+import 'package:haruapp/services/auth/auth.dart';
 
 class Validator {
   List<Function> _validatorList;

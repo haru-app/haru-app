@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/services/auth/auth_service.dart';
+import 'package:haruapp/services/auth/auth.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class LoginPage extends StatelessWidget {
   InputForm _inputForm;
   InputBox _emailInput;
   InputBox _passwordInput;
@@ -19,79 +14,84 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     this._inputForm = this.loginForm();
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(right: 40, left: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'HARU',
-              style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            _inputForm,
-            SizedBox(
-              height: 25,
-            ),
-            Container(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    print('비밀번호 찾기');
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 40, left: 40),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'HARU',
+                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                _inputForm,
+                SizedBox(
+                  height: 25,
+                ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('비밀번호 찾기');
+                      },
+                      child: Text(
+                        '비밀번호를 잊으셨나요?',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    if (!this._inputForm.validate()) {
+                      AlertBar(
+                              type: AlertType.error,
+                              message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                              context: context)
+                          .show();
+                      return;
+                    }
+                    if (!await AuthService(context: context).login(
+                        this._emailInput.value, this._passwordInput.value))
+                      return;
+                    Navigator.pushReplacementNamed(context, '/main');
+                  },
+                  color: Colors.blue,
+                  child: Text(
+                    '로그인',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    final result =
+                        await Navigator.pushNamed(context, '/register');
+                    if (result != null) {
+                      print(result);
+                      if (result == 'registerSuccess') {
+                        AlertBar(
+                                type: AlertType.success,
+                                message: '성공적으로 회원가입이 되었습니다.',
+                                context: context)
+                            .show();
+                      }
+                    }
                   },
                   child: Text(
-                    '비밀번호를 잊으셨나요?',
+                    '계정이 없으신가요?',
                     style: TextStyle(color: Colors.blue),
                   ),
-                )),
-            SizedBox(
-              height: 20,
+                ),
+              ],
             ),
-            RaisedButton(
-              onPressed: () {
-                //Navigator.pushNamed(context, '/main');
-                if (!this._inputForm.validate()) {
-                  AlertBar(
-                          type: AlertType.error,
-                          message: '입력하신 정보를 다시 한 번 확인해주세요.',
-                          context: context)
-                      .show();
-                  return;
-                }
-                AuthService(context: context)
-                    .login(this._emailInput.value, this._passwordInput.value);
-              },
-              color: Colors.blue,
-              child: Text(
-                '로그인',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () async {
-                final result = await Navigator.pushNamed(context, '/register');
-                if (result != null) {
-                  print(result);
-                  if (result == 'registerSuccess') {
-                    AlertBar(
-                            type: AlertType.success,
-                            message: '성공적으로 회원가입이 되었습니다.',
-                            context: context)
-                        .show();
-                  }
-                }
-              },
-              child: Text(
-                '계정이 없으신가요?',
-                style: TextStyle(color: Colors.blue),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
