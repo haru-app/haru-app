@@ -1,7 +1,7 @@
 ---
 name: Question
-about: Question
-title: "[QUESTION]"
+about: " Further information is requested"
+title: "[Question]"
 labels: question
 assignees: ''
 
