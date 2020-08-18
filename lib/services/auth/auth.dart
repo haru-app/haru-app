@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:haruapp/providers/user.dart';
 import 'package:haruapp/utils/http_client.dart';
 import 'package:haruapp/utils/response_result.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   BuildContext _context;
@@ -10,12 +13,24 @@ class AuthService {
     this._apiClient = HttpClient(type: 'api', context: _context);
   }
 
-  void login(String email, String password) async {
+  Future<bool> login(String email, String password) async {
     final parameters = {'email': email, 'password': password};
     ResponseResult result =
         await _apiClient.jsonGet('/auth/login', parameters: parameters);
-    print(result.response.statusCode);
-    print(result.json);
+
+    if (result.response.statusCode != 200) return false;
+
+    final pref = await SharedPreferences.getInstance();
+    pref.setString('accessToken', result.json['accessToken']);
+    pref.setString('refreshToken', result.json['refreshToken']);
+
+    final user = Provider.of<UserProvider>(_context, listen: false);
+    user.email = result.json['email'];
+    user.username = result.json['username'];
+    user.accessToken = result.json['accessToken'];
+    user.refreshToken = result.json['refreshToken'];
+
+    return true;
   }
 
   Future<bool> register(
@@ -32,8 +47,8 @@ class AuthService {
     ResponseResult result =
         await _apiClient.jsonPost('/auth/register', body: body);
 
-    if (result.response.statusCode == 200) return true;
-    return false;
+    if (result.response.statusCode != 200) return false;
+    return true;
   }
 
   Future<bool> duplicateEmail({

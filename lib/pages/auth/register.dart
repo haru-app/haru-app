@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/services/auth/auth_service.dart';
+import 'package:haruapp/services/auth/auth.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
@@ -17,64 +17,65 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _inputForm = this.registerForm();
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'HARU',
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '나만의 일기장을 작성하고 원하는 일기는 공유하세요',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              _inputForm,
-              SizedBox(
-                height: 20,
-              ),
-              RaisedButton(
-                onPressed: () async {
-                  if (!this._inputForm.validate()) {
-                    AlertBar(
-                            type: AlertType.error,
-                            message: '입력하신 정보를 다시 한 번 확인해주세요.',
-                            context: context)
-                        .show();
-                    return;
-                  }
-                  AuthService authService = AuthService(context: context);
-                  if (!await authService.register(
-                      email: this._emailInput.value,
-                      password: this._passwordInput.value,
-                      username: this._usernameInput.value,
-                      birthday: this._birthdayInput.value)) return;
-                  Navigator.pop(context, 'registerSuccess');
-                },
-                color: Colors.blue,
-                child: Text(
-                  '회원가입',
-                  style: TextStyle(color: Colors.white),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'HARU',
+                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  '계정이 이미 있으신가요?',
-                  style: TextStyle(color: Colors.blue),
+                Text(
+                  '나만의 일기장을 작성하고 원하는 일기는 공유하세요',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 50,
+                ),
+                _inputForm,
+                SizedBox(
+                  height: 20,
+                ),
+                RaisedButton(
+                  onPressed: () async {
+                    if (!this._inputForm.validate()) {
+                      AlertBar(
+                              type: AlertType.error,
+                              message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                              context: context)
+                          .show();
+                      return;
+                    }
+                    AuthService authService = AuthService(context: context);
+                    if (!await authService.register(
+                        email: this._emailInput.value,
+                        password: this._passwordInput.value,
+                        username: this._usernameInput.value,
+                        birthday: this._birthdayInput.value)) return;
+                    Navigator.pop(context, 'registerSuccess');
+                  },
+                  color: Colors.blue,
+                  child: Text(
+                    '회원가입',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    '계정이 이미 있으신가요?',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

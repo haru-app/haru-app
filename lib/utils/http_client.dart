@@ -79,7 +79,8 @@ class HttpClient extends BaseClient {
         await this.delete(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode == 422 || response.statusCode == 500) {
+    if (this._context != null) if (response.statusCode == 422 ||
+        response.statusCode == 500) {
       AlertBar(
               type: AlertType.error,
               message: json['errorMessage'],
@@ -98,7 +99,8 @@ class HttpClient extends BaseClient {
         headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode == 422 || response.statusCode == 500) {
+    if (this._context != null) if (response.statusCode == 422 ||
+        response.statusCode == 500) {
       AlertBar(
               type: AlertType.error,
               message: json['errorMessage'],
@@ -117,7 +119,8 @@ class HttpClient extends BaseClient {
         headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode == 422 || response.statusCode == 500) {
+    if (this._context != null) if (response.statusCode == 422 ||
+        response.statusCode == 500) {
       AlertBar(
               type: AlertType.error,
               message: json['errorMessage'],
@@ -134,7 +137,8 @@ class HttpClient extends BaseClient {
         await this.get(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (response.statusCode == 422 || response.statusCode == 500) {
+    if (this._context != null) if (response.statusCode == 422 ||
+        response.statusCode == 500) {
       AlertBar(
               type: AlertType.error,
               message: json['errorMessage'],
