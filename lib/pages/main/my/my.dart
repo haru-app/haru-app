@@ -238,7 +238,7 @@ class _MYNote extends StatelessWidget {
 class _MYNoteBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _setColor = Colors.red;
+    var _setColor = Colors.black45;
     var _diaryDate = '2020-05-25';
     return GestureDetector(
       onTap: () {
