@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:haruapp/services/auth/auth.dart';
 import 'package:haruapp/widgets/common/search_screen.dart';
 
 class TopBar extends StatelessWidget {
@@ -8,11 +9,17 @@ class TopBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(right: 1),
-          child: Text(
-            'Haru',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: () {
+            print('탭');
+            AuthService(context: context).updateToken();
+          },
+          child: Container(
+            padding: EdgeInsets.only(right: 1),
+            child: Text(
+              'Haru',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         Container(

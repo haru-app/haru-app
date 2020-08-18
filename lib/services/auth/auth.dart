@@ -64,4 +64,23 @@ class AuthService {
       return true;
     return false;
   }
+
+  Future<bool> updateToken({
+    String email,
+  }) async {
+    final pref = await SharedPreferences.getInstance();
+
+    final parameters = {
+      'accessToken': pref.getString('accessToken'),
+      'refreshToken': pref.getString('refreshToken'),
+    };
+    ResponseResult result =
+        await _apiClient.jsonPut('/auth/token', body: parameters);
+
+    if (result.response.statusCode != 200) return false;
+
+    pref.setString('accessToken', result.json['accessToken']);
+
+    return true;
+  }
 }

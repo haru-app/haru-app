@@ -4,6 +4,8 @@ import 'package:haruapp/utils/config.dart';
 import 'package:haruapp/utils/response_result.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:haruapp/services/auth/auth.dart';
 
 class HttpClient extends BaseClient {
   final Client _client = Client();
@@ -30,8 +32,14 @@ class HttpClient extends BaseClient {
           this._baseUrl, this._lastUrl + url, parameterConvertor(parameters));
   }
 
-  Future<StreamedResponse> send(BaseRequest request) {
-    request.headers['Content-Type'] = 'application/json; charset=utf-8';
+  Future<StreamedResponse> send(BaseRequest request) async {
+    final pref = await SharedPreferences.getInstance();
+    print('Bearer ${pref.getString('accessToken')}');
+    if (pref.getString('accessToken') != null) {
+      request.headers['Content-Type'] = 'application/json; charset=utf-8';
+    }
+    request.headers['Authorization'] =
+        'bearer ${pref.getString('accessToken')}';
     return this._client.send(request);
   }
 
@@ -78,14 +86,21 @@ class HttpClient extends BaseClient {
     Response response =
         await this.delete(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-
-    if (this._context != null) if (response.statusCode == 422 ||
-        response.statusCode == 500) {
-      AlertBar(
-              type: AlertType.error,
-              message: json['errorMessage'],
-              context: this._context)
-          .show();
+    if (response.statusCode == 422 ||
+        response.statusCode == 500 ||
+        response.statusCode == 401) {
+      if (response.statusCode == 401 && json['code'] == '1001') {
+        if (await AuthService(context: this._context).updateToken()) {
+          //여기부터
+        }
+      }
+      if (this._context != null) {
+        AlertBar(
+                type: AlertType.error,
+                message: json['errorMessage'],
+                context: this._context)
+            .show();
+      }
     }
 
     return ResponseResult(response, json);

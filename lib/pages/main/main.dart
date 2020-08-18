@@ -14,36 +14,30 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-          accentColor: Colors.white),
-      home: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            title: TopBar(),
-          ),
-          body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            children: <Widget>[
-              Stack(
-                children: <Widget>[HomePage()],
-              ),
-              Stack(
-                children: <Widget>[MYPage()],
-              ),
-              Stack(
-                children: <Widget>[FriendsPage()],
-              ),
-              Stack(
-                children: <Widget>[SettingPage()],
-              )
-            ],
-          ),
-          bottomNavigationBar: BottomBar(),
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: TopBar(),
         ),
+        body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
+          children: <Widget>[
+            Stack(
+              children: <Widget>[HomePage()],
+            ),
+            Stack(
+              children: <Widget>[MYPage()],
+            ),
+            Stack(
+              children: <Widget>[FriendsPage()],
+            ),
+            Stack(
+              children: <Widget>[SettingPage()],
+            )
+          ],
+        ),
+        bottomNavigationBar: BottomBar(),
       ),
     );
   }
