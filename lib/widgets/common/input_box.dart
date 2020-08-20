@@ -75,8 +75,12 @@ class _InputBoxState extends State<InputBox> {
       onTap: onTap,
       controller: this.widget._controller,
       validator: this.widget._validator,
-      decoration:
-          InputDecoration(labelText: this.widget._name, errorText: _errorText),
+      decoration: InputDecoration(
+          labelText: this.widget._name,
+          labelStyle: TextStyle(color: Colors.grey),
+          errorText: _errorText,
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       obscureText: this.widget._obscureText,
       onChanged: (String value) {
         String newString;
