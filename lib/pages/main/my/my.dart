@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:haruapp/widgets/common/dropdown_box.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
+import 'package:provider/provider.dart';
+import 'package:haruapp/providers/user.dart';
 
-class MYPage extends StatefulWidget {
-  @override
-  _MYPageState createState() => _MYPageState();
-}
-
-class _MYPageState extends State<MYPage> {
+class MYPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -23,7 +21,7 @@ class _MYPageState extends State<MYPage> {
                   border: Border(
                       top: BorderSide(color: Colors.black12, width: 5.0),
                       bottom: BorderSide(color: Colors.black12, width: 5.0))),
-              child: _MYProfile(),
+              child: MYProfile(),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -37,7 +35,14 @@ class _MYPageState extends State<MYPage> {
   }
 }
 
-class _MYProfile extends StatelessWidget {
+class MYProfile extends StatefulWidget {
+  @override
+  _MYProfileState createState() => _MYProfileState();
+}
+
+class _MYProfileState extends State<MYProfile> {
+  String _value = 'S';
+  String _iconValue = '0';
   InputForm _inputForm;
   InputBox _nameInput;
   @override
@@ -64,7 +69,7 @@ class _MYProfile extends StatelessWidget {
                     width: 15,
                   ),
                   Text(
-                    '이름',
+                    Provider.of<UserProvider>(context, listen: false).username,
                     style: TextStyle(fontSize: 17),
                   )
                 ],
@@ -115,8 +120,6 @@ class _MYProfile extends StatelessWidget {
   }
 
   void showAlertDialog(BuildContext context) async {
-    String _value = '0';
-    String _iconValue = '0';
     String result = await showDialog(
         context: context,
         barrierDismissible: false,
@@ -127,38 +130,16 @@ class _MYProfile extends StatelessWidget {
               '새 일기장 만들기',
               style: TextStyle(fontSize: 20),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _inputForm,
-                SizedBox(height: 30),
-                Text('최대 공개 범위'),
-                SizedBox(height: 5),
-                DropdownButton<String>(
-                  items: [
-                    DropdownMenuItem<String>(
-                      child: Text('비공개'),
-                      value: '0',
-                    ),
-                    DropdownMenuItem<String>(
-                      child: Text('친구 공개'),
-                      value: '1',
-                    ),
-                    DropdownMenuItem<String>(
-                      child: Text('전체 공개'),
-                      value: '2',
-                    )
-                  ],
-                  onChanged: (String value) {
-                    _value = value;
-                  },
-                  value: _value,
-                ),
-                SizedBox(height: 20),
-                Text('아이콘 선택'),
-                SizedBox(height: 5),
-                DropdownButton<String>(
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _inputForm,
+                  SizedBox(height: 30),
+                  Text('최대 공개 범위'),
+                  SizedBox(height: 5),
+                  DropdownBox<String>(
                     items: [
                       DropdownMenuItem<String>(
                         child: Text('비공개'),
@@ -174,10 +155,38 @@ class _MYProfile extends StatelessWidget {
                       )
                     ],
                     onChanged: (String value) {
-                      _iconValue = value;
+                      setState(() {
+                        _value = value;
+                      });
                     },
-                    value: _iconValue)
-              ],
+                    value: _value,
+                  ),
+                  SizedBox(height: 20),
+                  Text('아이콘 선택'),
+                  SizedBox(height: 5),
+                  DropdownBox<String>(
+                      items: [
+                        DropdownMenuItem<String>(
+                          child: Text('비공개'),
+                          value: '0',
+                        ),
+                        DropdownMenuItem<String>(
+                          child: Text('친구 공개'),
+                          value: '1',
+                        ),
+                        DropdownMenuItem<String>(
+                          child: Text('전체 공개'),
+                          value: '2',
+                        )
+                      ],
+                      onChanged: (String value) {
+                        setState(() {
+                          _iconValue = value;
+                        });
+                      },
+                      value: _iconValue)
+                ],
+              ),
             ),
             actions: <Widget>[
               FlatButton(

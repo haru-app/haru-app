@@ -4,6 +4,7 @@ import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   InputForm _inputForm;
@@ -12,6 +13,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    autoLogin(context);
+
     this._inputForm = this.loginForm();
     return Scaffold(
       body: Center(
@@ -119,5 +122,17 @@ class LoginPage extends StatelessWidget {
       ),
       this._passwordInput,
     ]));
+  }
+
+  Future<void> autoLogin(context) async {
+    final pref = await SharedPreferences.getInstance();
+    if (pref.getString('email') == null) return false;
+    print(pref.getString('email'));
+    bool result = await AuthService(context: context)
+        .updateToken(email: pref.getString('email'));
+    print(result);
+    if (result) {
+      Navigator.pushReplacementNamed(context, '/main');
+    }
   }
 }

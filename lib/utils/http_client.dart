@@ -43,6 +43,26 @@ class HttpClient extends BaseClient {
     return this._client.send(request);
   }
 
+  Future<String> errorHandler(
+      {Response response, Map<String, dynamic> json}) async {
+    if (this._context != null) {
+      if (response.statusCode == 422 || response.statusCode == 500) {
+        AlertBar(
+                type: AlertType.error,
+                message: json['errorMessage'],
+                context: this._context)
+            .show();
+      }
+      if (response.statusCode == 401 && json['code'] == '1001') {
+        if (await AuthService(context: this._context).updateToken()) {
+          return 'resend';
+        } else {
+          //로그인 페이지로
+        }
+      }
+    }
+  }
+
   @override
   Future<Response> delete(url,
       {Map<String, String> headers, Map<String, dynamic> parameters}) {
@@ -86,21 +106,12 @@ class HttpClient extends BaseClient {
     Response response =
         await this.delete(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 422 ||
-        response.statusCode == 500 ||
-        response.statusCode == 401) {
-      if (response.statusCode == 401 && json['code'] == '1001') {
-        if (await AuthService(context: this._context).updateToken()) {
-          //여기부터
-        }
-      }
-      if (this._context != null) {
-        AlertBar(
-                type: AlertType.error,
-                message: json['errorMessage'],
-                context: this._context)
-            .show();
-      }
+
+    final errorResult = await errorHandler(response: response, json: json);
+    if (errorResult == 'resend') {
+      response =
+          await this.delete(url, headers: headers, parameters: parameters);
+      json = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
     return ResponseResult(response, json);
@@ -114,13 +125,11 @@ class HttpClient extends BaseClient {
         headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (this._context != null) if (response.statusCode == 422 ||
-        response.statusCode == 500) {
-      AlertBar(
-              type: AlertType.error,
-              message: json['errorMessage'],
-              context: this._context)
-          .show();
+    final errorResult = await errorHandler(response: response, json: json);
+    if (errorResult == 'resend') {
+      response = await this.put(url,
+          headers: headers, body: body, encoding: encoding, isJson: true);
+      json = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
     return ResponseResult(response, json);
@@ -134,13 +143,11 @@ class HttpClient extends BaseClient {
         headers: headers, body: body, encoding: encoding, isJson: true);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (this._context != null) if (response.statusCode == 422 ||
-        response.statusCode == 500) {
-      AlertBar(
-              type: AlertType.error,
-              message: json['errorMessage'],
-              context: this._context)
-          .show();
+    final errorResult = await errorHandler(response: response, json: json);
+    if (errorResult == 'resend') {
+      response = await this.post(url,
+          headers: headers, body: body, encoding: encoding, isJson: true);
+      json = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
     return ResponseResult(response, json);
@@ -152,13 +159,10 @@ class HttpClient extends BaseClient {
         await this.get(url, headers: headers, parameters: parameters);
     Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
 
-    if (this._context != null) if (response.statusCode == 422 ||
-        response.statusCode == 500) {
-      AlertBar(
-              type: AlertType.error,
-              message: json['errorMessage'],
-              context: this._context)
-          .show();
+    final errorResult = await errorHandler(response: response, json: json);
+    if (errorResult == 'resend') {
+      response = await this.get(url, headers: headers, parameters: parameters);
+      json = jsonDecode(utf8.decode(response.bodyBytes));
     }
 
     return ResponseResult(response, json);

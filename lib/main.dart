@@ -1,10 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/pages/router.dart';
 import 'package:haruapp/providers/user.dart';
+import 'package:haruapp/services/auth/auth.dart';
 import 'package:haruapp/utils/config.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,28 +19,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-//          accentColor: Colors.black,
-//          primarySwatch: Colors.blue,
-        ),
-        initialRoute: '/login',
-        routes: routes,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+        providers: [
+          ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider())
         ],
-        supportedLocales: [
-          const Locale('ko', 'KR'),
-          const Locale('en', 'US'),
-        ],
-      ),
-    );
+        child: MaterialApp(
+          title: 'Haru',
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: Colors.white,
+            //          accentColor: Colors.black,
+            //          primarySwatch: Colors.blue,
+          ),
+          initialRoute: '/login',
+          routes: routes,
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            DefaultCupertinoLocalizations.delegate
+          ],
+          supportedLocales: [
+            const Locale('ko', 'KR'),
+            const Locale('en', 'US'),
+          ],
+        ));
   }
 }

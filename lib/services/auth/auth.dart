@@ -23,6 +23,7 @@ class AuthService {
     final pref = await SharedPreferences.getInstance();
     pref.setString('accessToken', result.json['accessToken']);
     pref.setString('refreshToken', result.json['refreshToken']);
+    pref.setString('email', result.json['email']);
 
     final user = Provider.of<UserProvider>(_context, listen: false);
     user.email = result.json['email'];
@@ -80,6 +81,13 @@ class AuthService {
     if (result.response.statusCode != 200) return false;
 
     pref.setString('accessToken', result.json['accessToken']);
+    pref.setString('email', result.json['email']);
+
+    final user = Provider.of<UserProvider>(_context, listen: false);
+    user.email = result.json['email'];
+    user.username = result.json['username'];
+    user.accessToken = pref.getString('accessToken');
+    user.refreshToken = pref.getString('refreshToken');
 
     return true;
   }
