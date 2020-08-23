@@ -11,7 +11,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: Colors.red,
           child: Column(
             children: <Widget>[
               Container(
@@ -24,7 +23,6 @@ class _HomePageState extends State<HomePage> {
               Stack(
                 children: <Widget>[
                   Container(
-                      color: Colors.blue,
                       width: MediaQuery.of(context).size.width,
                       child: Text('asdf')),
                   Align(
