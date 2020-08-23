@@ -250,9 +250,7 @@ class _MYNoteBook extends StatelessWidget {
     var _setColor = Colors.black45;
     var _diaryDate = '2020-05-25';
     return GestureDetector(
-      onTap: () {
-        print('asdasd');
-      },
+      onTap: () {},
       child: Container(
         padding: EdgeInsets.all(15.0),
         child: Column(

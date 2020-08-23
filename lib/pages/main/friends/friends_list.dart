@@ -32,9 +32,7 @@ class _Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print('');
-      },
+      onTap: () {},
       child: Column(
         children: <Widget>[
           CircleAvatar(

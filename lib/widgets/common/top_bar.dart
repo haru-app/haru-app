@@ -11,7 +11,6 @@ class TopBar extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            print('탭');
             AuthService(context: context).updateToken();
           },
           child: Container(

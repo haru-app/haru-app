@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/auth.dart';
+import 'package:haruapp/services/code.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
@@ -19,11 +20,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    autoLogin(context).then((bool value) {
-      setState(() {
-        isAutoLogin = value;
+    CodeService(context: context).fetchAllCode().then((value) {
+      autoLogin(context).then((bool value) {
+        setState(() {
+          isAutoLogin = value;
+        });
+        return value;
       });
-      return value;
     });
     super.initState();
   }
@@ -56,9 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
-                            onTap: () {
-                              print('비밀번호 찾기');
-                            },
+                            onTap: () {},
                             child: Text(
                               '비밀번호를 잊으셨나요?',
                               style: TextStyle(color: Colors.blue),
@@ -96,7 +97,6 @@ class _LoginPageState extends State<LoginPage> {
                           final result =
                               await Navigator.pushNamed(context, '/register');
                           if (result != null) {
-                            print(result);
                             if (result == 'registerSuccess') {
                               AlertBar(
                                       type: AlertType.success,
@@ -148,10 +148,8 @@ class _LoginPageState extends State<LoginPage> {
     if (pref.getString('email') == null ||
         pref.getString('accessToken') == null ||
         pref.getString('refreshToken') == null) return false;
-    print(pref.getString('email'));
     bool result = await AuthService(context: context)
         .updateToken(email: pref.getString('email'));
-    print(result);
     if (result) {
       await Navigator.pushReplacementNamed(context, '/main');
       return true;

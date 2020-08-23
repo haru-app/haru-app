@@ -34,7 +34,6 @@ class HttpClient extends BaseClient {
 
   Future<StreamedResponse> send(BaseRequest request) async {
     final pref = await SharedPreferences.getInstance();
-    print('Bearer ${pref.getString('accessToken')}');
     request.headers['Content-Type'] = 'application/json; charset=utf-8';
     if (pref.getString('accessToken') != null) {
       request.headers['Authorization'] =
