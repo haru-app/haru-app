@@ -16,7 +16,7 @@ class AuthService {
   Future<bool> login(String email, String password) async {
     final parameters = {'email': email, 'password': password};
     ResponseResult result =
-        await _apiClient.jsonGet('/auth/login', parameters: parameters);
+        await _apiClient.jsonPost('/auth/login', body: parameters);
 
     if (result.response.statusCode != 200) return false;
 
