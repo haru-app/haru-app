@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:haruapp/services/auth/auth.dart';
+import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/widgets/common/search_screen.dart';
 
 class TopBar extends StatelessWidget {

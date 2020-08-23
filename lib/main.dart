@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/router.dart';
 import 'package:haruapp/providers/user.dart';
-import 'package:haruapp/services/auth/auth.dart';
+import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/utils/config.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

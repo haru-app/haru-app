@@ -5,7 +5,7 @@ import 'package:haruapp/utils/response_result.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:haruapp/services/auth/auth.dart';
+import 'package:haruapp/services/auth.dart';
 
 class HttpClient extends BaseClient {
   final Client _client = Client();

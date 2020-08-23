@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/login.dart';
-import 'package:haruapp/services/auth/auth.dart';
+import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 
 class SettingPage extends StatelessWidget {
