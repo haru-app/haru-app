@@ -91,4 +91,9 @@ class AuthService {
 
     return true;
   }
+
+  Future<void> logout() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.clear();
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/login.dart';
+import 'package:haruapp/services/auth/auth.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 
 class SettingPage extends StatelessWidget {
@@ -126,11 +127,13 @@ class SettingPage extends StatelessWidget {
             new FlatButton(
               child: new Text("예"),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => LoginPage()),
-                    (route) => false);
+                AuthService().logout().then((void _) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginPage()),
+                      (route) => false);
+                });
               },
             ),
             new FlatButton(
