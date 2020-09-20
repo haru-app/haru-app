@@ -2,16 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/services/auth.dart';
-import 'package:haruapp/widgets/common/top_bar.dart';
+
+import 'package:provider/provider.dart';
+import 'package:haruapp/providers/user.dart';
 
 class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: 40),
+            padding: EdgeInsets.only(bottom: 15),
             child: Center(
               child: Column(
                 children: <Widget>[
@@ -31,7 +33,8 @@ class SettingPage extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 15, bottom: 15),
                     child: Text(
-                      '이름',
+                      Provider.of<UserProvider>(context, listen: false)
+                          .username,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),

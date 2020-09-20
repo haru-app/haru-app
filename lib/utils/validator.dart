@@ -101,7 +101,7 @@ Function vUsername({String errorText}) =>
 Function vPassword({String errorText}) =>
     (value) => !RegExp(r"^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{8,16}$")
             .hasMatch(value)
-        ? errorText ?? "비밀번호는 영문, 숫자, 특수문자가 포함되야합니다."
+        ? errorText ?? "비밀번호는 8글자 이상, 영문, 숫자, 특수문자가 포함되야합니다."
         : null;
 
 Function vPasswordConfirm(String password, {String errorText}) =>
