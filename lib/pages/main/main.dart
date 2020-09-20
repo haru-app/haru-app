@@ -27,7 +27,7 @@ class _MainPageState extends State<MainPage> {
               children: <Widget>[HomePage()],
             ),
             Stack(
-              children: <Widget>[MYPage()],
+              children: <Widget>[MyPage()],
             ),
             Stack(
               children: <Widget>[FriendsPage()],
