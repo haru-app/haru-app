@@ -42,8 +42,7 @@ class HttpClient extends BaseClient {
     return this._client.send(request);
   }
 
-  Future<String> errorHandler(
-      {Response response, Map<String, dynamic> json}) async {
+  Future<String> errorHandler({Response response, dynamic json}) async {
     if (this._context != null) {
       if (response.statusCode == 422 || response.statusCode == 500) {
         AlertBar(
@@ -104,7 +103,7 @@ class HttpClient extends BaseClient {
       {Map<String, String> headers, Map<String, dynamic> parameters}) async {
     Response response =
         await this.delete(url, headers: headers, parameters: parameters);
-    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    dynamic json = jsonDecode(utf8.decode(response.bodyBytes));
 
     final errorResult = await errorHandler(response: response, json: json);
     if (errorResult == 'resend') {
@@ -122,7 +121,7 @@ class HttpClient extends BaseClient {
       Encoding encoding}) async {
     Response response = await this.put(url,
         headers: headers, body: body, encoding: encoding, isJson: true);
-    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    dynamic json = jsonDecode(utf8.decode(response.bodyBytes));
 
     final errorResult = await errorHandler(response: response, json: json);
     if (errorResult == 'resend') {
@@ -140,7 +139,7 @@ class HttpClient extends BaseClient {
       Encoding encoding}) async {
     Response response = await this.post(url,
         headers: headers, body: body, encoding: encoding, isJson: true);
-    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
+    dynamic json = jsonDecode(utf8.decode(response.bodyBytes));
 
     final errorResult = await errorHandler(response: response, json: json);
     if (errorResult == 'resend') {
@@ -156,14 +155,12 @@ class HttpClient extends BaseClient {
       {Map<String, String> headers, Map<String, dynamic> parameters}) async {
     Response response =
         await this.get(url, headers: headers, parameters: parameters);
-    Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes));
-
+    dynamic json = jsonDecode(utf8.decode(response.bodyBytes));
     final errorResult = await errorHandler(response: response, json: json);
     if (errorResult == 'resend') {
       response = await this.get(url, headers: headers, parameters: parameters);
       json = jsonDecode(utf8.decode(response.bodyBytes));
     }
-
     return ResponseResult(response, json);
   }
 

@@ -5,8 +5,9 @@ import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:provider/provider.dart';
 import 'package:haruapp/providers/user.dart';
+import 'package:haruapp/services/diary.dart';
 
-class MYPage extends StatelessWidget {
+class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -21,12 +22,12 @@ class MYPage extends StatelessWidget {
                   border: Border(
                       top: BorderSide(color: Colors.black12, width: 5.0),
                       bottom: BorderSide(color: Colors.black12, width: 5.0))),
-              child: MYProfile(),
+              child: MyProfile(),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              child: _MYNote(),
+              child: _MyNote(),
             )
           ],
         ),
@@ -35,12 +36,12 @@ class MYPage extends StatelessWidget {
   }
 }
 
-class MYProfile extends StatefulWidget {
+class MyProfile extends StatefulWidget {
   @override
-  _MYProfileState createState() => _MYProfileState();
+  _MyProfileState createState() => _MyProfileState();
 }
 
-class _MYProfileState extends State<MYProfile> {
+class _MyProfileState extends State<MyProfile> {
   String _value = 'S';
   String _iconValue = '0';
   InputForm _inputForm;
@@ -224,7 +225,26 @@ class _MYProfileState extends State<MYProfile> {
   }
 }
 
-class _MYNote extends StatelessWidget {
+class _MyNote extends StatefulWidget {
+  @override
+  _MyNote_State createState() => _MyNote_State();
+}
+
+class _MyNote_State extends State<_MyNote> {
+  dynamic diaryList = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    DiaryService diaryService = DiaryService(context: context);
+    diaryService.getDiaryList().then((dynamic value) {
+      setState(() {
+        diaryList = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -234,9 +254,8 @@ class _MYNote extends StatelessWidget {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-          children: List.generate(orientation == Orientation.portrait ? 9 : 10,
-              (position) {
-            return _MYNoteBook();
+          children: List.generate(diaryList.length, (position) {
+            return _MyNoteBook(diaryList[position]);
           }),
         );
       }),
@@ -244,11 +263,15 @@ class _MYNote extends StatelessWidget {
   }
 }
 
-class _MYNoteBook extends StatelessWidget {
+class _MyNoteBook extends StatelessWidget {
+  dynamic diary;
+  _MyNoteBook(diary) {
+    this.diary = diary;
+  }
+
   @override
   Widget build(BuildContext context) {
     var _setColor = Colors.black45;
-    var _diaryDate = '2020-05-25';
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -264,7 +287,7 @@ class _MYNoteBook extends StatelessWidget {
               height: 5,
             ),
             Text(
-              _diaryDate,
+              diary['diaryName'],
               style: TextStyle(fontSize: 15),
             )
           ],
