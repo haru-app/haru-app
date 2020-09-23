@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/main/friends/friends_view.dart';
-import 'package:haruapp/widgets/common/top_bar.dart';
+import 'package:haruapp/services/friend.dart';
+import 'package:haruapp/pages/main/friends/friends_requestDialog.dart';
+import 'package:haruapp/services/friend_request.dart';
 
 class FriendsPage extends StatefulWidget {
   @override
@@ -9,6 +11,22 @@ class FriendsPage extends StatefulWidget {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
+  dynamic friendList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FriendService friendService = FriendService(context: context);
+    friendService.getFriendList().then((dynamic value) {
+      setState(() {
+        friendList = value;
+        print('친구목록 : ');
+        print(friendList);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -41,6 +59,31 @@ class _FriendsPageState extends State<FriendsPage> {
     ));
   }
 
+  void friendsReqDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: (Text('친구 요청 목록')),
+            content: SingleChildScrollView(
+              child: FriendDialog(),
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                child: Text(
+                  '닫기',
+                  style: TextStyle(fontSize: 15),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, '닫기');
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Widget _friendsListView(BuildContext context) {
     return SafeArea(
       child: OrientationBuilder(
@@ -48,16 +91,23 @@ class _FriendsPageState extends State<FriendsPage> {
         return GridView.count(
           padding: EdgeInsets.only(top: 15),
           crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-          children: List.generate(orientation == Orientation.portrait ? 15 : 10,
-              (position) {
-            return _friendsList(context);
+          children: List.generate(friendList.length, (position) {
+            print(friendList[position]);
+            return _FriendsList(friendList[position]);
           }),
         );
       }),
     );
   }
+}
 
-  Widget _friendsList(BuildContext context) {
+class _FriendsList extends StatelessWidget {
+  dynamic friend;
+  _FriendsList(friend) {
+    this.friend = friend;
+  }
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
@@ -75,220 +125,11 @@ class _FriendsPageState extends State<FriendsPage> {
             ),
           ),
           Text(
-            '이름',
+            friend['username'],
             style: TextStyle(fontSize: 15),
           )
         ],
       ),
     );
-  }
-
-  void friendsReqDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: (Text('친구 요청 목록')),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black38,
-                              child: Icon(
-                                Icons.person,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              '친구 1',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.blue,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '수락',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.red,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '거절',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black38,
-                              child: Icon(
-                                Icons.person,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              '친구 2',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.blue,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '수락',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.red,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '거절',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 20,
-                              backgroundColor: Colors.black38,
-                              child: Icon(
-                                Icons.person,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              '친구 3',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.blue,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '수락',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 15,
-                            ),
-                            ButtonTheme(
-                              disabledColor: Colors.red,
-                              minWidth: 50,
-                              height: 30,
-                              child: RaisedButton(
-                                child: Text(
-                                  '거절',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              RaisedButton(
-                child: Text(
-                  '닫기',
-                  style: TextStyle(fontSize: 15),
-                ),
-                onPressed: () {
-                  Navigator.pop(context, '닫기');
-                },
-              ),
-            ],
-          );
-        });
   }
 }
