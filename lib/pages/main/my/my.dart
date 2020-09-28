@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:haruapp/utils/validator.dart';
+import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/dropdown_box.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:provider/provider.dart';
 import 'package:haruapp/providers/user.dart';
 import 'package:haruapp/services/diary.dart';
+import 'package:haruapp/providers/code.dart';
 
 class MyPage extends StatelessWidget {
   @override
@@ -42,10 +45,23 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  String _value = 'S';
-  String _iconValue = '0';
+  String _publicRangeCode;
+  String _diaryIconCode;
   InputForm _inputForm;
   InputBox _nameInput;
+  CodeProvider _code;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setState(() {
+      _code = Provider.of<CodeProvider>(context, listen: false);
+      _publicRangeCode = _code.codes['array']['3'][0]['code'];
+      _diaryIconCode = _code.codes['array']['2'][0]['code'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -138,62 +154,67 @@ class _MyProfileState extends State<MyProfile> {
                 children: <Widget>[
                   _inputForm,
                   SizedBox(height: 30),
-                  Text('최대 공개 범위'),
+                  Text('공개 범위'),
                   SizedBox(height: 5),
                   DropdownBox<String>(
-                    items: [
-                      DropdownMenuItem<String>(
-                        child: Text('비공개'),
-                        value: 'S',
-                      ),
-                      DropdownMenuItem<String>(
-                        child: Text('친구 공개'),
-                        value: 'F',
-                      ),
-                      DropdownMenuItem<String>(
-                        child: Text('전체 공개'),
-                        value: 'A',
-                      )
-                    ],
+                    items: List.generate(_code.codes['array']['3'].length,
+                        (index) {
+                      return DropdownMenuItem<String>(
+                        child: Text(_code.codes['array']['3'][index]['name']),
+                        value: _code.codes['array']['3'][index]['code'],
+                      );
+                    }),
                     onChanged: (String value) {
                       setState(() {
-                        _value = value;
+                        _publicRangeCode = value;
                       });
                     },
-                    value: _value,
+                    value: _publicRangeCode,
                   ),
                   SizedBox(height: 20),
                   Text('아이콘 선택'),
                   SizedBox(height: 5),
                   DropdownBox<String>(
-                      items: [
-                        DropdownMenuItem<String>(
-                          child: Text('비공개'),
-                          value: '0',
-                        ),
-                        DropdownMenuItem<String>(
-                          child: Text('친구 공개'),
-                          value: '1',
-                        ),
-                        DropdownMenuItem<String>(
-                          child: Text('전체 공개'),
-                          value: '2',
-                        )
-                      ],
+                      items: List.generate(_code.codes['array']['2'].length,
+                          (index) {
+                        return DropdownMenuItem<String>(
+                          child: Text(_code.codes['array']['2'][index]['name']),
+                          value: _code.codes['array']['2'][index]['code'],
+                        );
+                      }),
                       onChanged: (String value) {
                         setState(() {
-                          _iconValue = value;
+                          _diaryIconCode = value;
                         });
                       },
-                      value: _iconValue)
+                      value: _diaryIconCode)
                 ],
               ),
             ),
             actions: <Widget>[
               FlatButton(
                 child: Text('확인'),
-                onPressed: () {
+                onPressed: () async {
+                  if (!this._inputForm.validate()) {
+                    AlertBar(
+                            type: AlertType.error,
+                            message: '입력하신 정보를 다시 한 번 확인해주세요.',
+                            context: context)
+                        .show();
+                    return;
+                  }
+                  DiaryService diaryService =
+                      new DiaryService(context: context);
+                  print('hi');
+                  await diaryService.addDiary(
+                      _nameInput.value, _publicRangeCode, _diaryIconCode);
+                  print('hi');
                   Navigator.pop(context, '확인');
+                  AlertBar(
+                          type: AlertType.success,
+                          message: '일기장을 추가했습니다.',
+                          context: context)
+                      .show();
                 },
               ),
               FlatButton(
@@ -211,6 +232,7 @@ class _MyProfileState extends State<MyProfile> {
     this._nameInput = InputBox(
       name: '일기장 이름',
       inputType: InputType.STRING,
+      validator: (String v) => Validator([(vIsRequired())], v).validate(),
     );
     return InputForm(
       child: Column(
@@ -267,11 +289,13 @@ class _MyNoteBook extends StatelessWidget {
   dynamic diary;
   _MyNoteBook(diary) {
     this.diary = diary;
+    print(diary['diaryName']);
   }
 
   @override
   Widget build(BuildContext context) {
     var _setColor = Colors.black45;
+    print(diary);
     return GestureDetector(
       onTap: () {},
       child: Container(

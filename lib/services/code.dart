@@ -15,8 +15,8 @@ class CodeService {
 
   Future<void> fetchAllCode() async {
     ResponseResult result = await _apiClient.jsonGet('/code/all');
-
     final code = Provider.of<CodeProvider>(_context, listen: false);
     code.codes = result.json;
+    print(code.codes);
   }
 }
