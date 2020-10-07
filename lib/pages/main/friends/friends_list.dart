@@ -76,7 +76,7 @@ class _FriendsPageState extends State<FriendsPage> {
                   style: TextStyle(fontSize: 15),
                 ),
                 onPressed: () {
-                  Navigator.pop(context, '닫기');
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -105,13 +105,18 @@ class _FriendsList extends StatelessWidget {
   dynamic friend;
   _FriendsList(friend) {
     this.friend = friend;
+    print(friend['userIdx']);
   }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => FriendsViewPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FriendsViewPage(
+                      friends: friend,
+                    )));
       },
       child: Column(
         children: <Widget>[

@@ -23,14 +23,10 @@ class _HomePageState extends State<HomePage> {
               Stack(
                 children: <Widget>[
                   Container(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text('asdf')),
+                    width: MediaQuery.of(context).size.width,
+                  ),
                   Align(
                     alignment: FractionalOffset.bottomCenter,
-                    child: Container(
-                      color: Colors.black,
-                      child: Text('adsfasdfa'),
-                    ),
                   )
                 ],
               ),

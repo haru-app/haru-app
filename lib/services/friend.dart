@@ -18,4 +18,16 @@ class FriendService {
     print(result.json.length);
     return result.json;
   }
+
+  Future<dynamic> getCheckFriend({int friendUserIdx}) async {
+    ResponseResult result =
+        await _apiClient.jsonGet('/friendCheck/${friendUserIdx}');
+    return result.json;
+  }
+
+  Future<dynamic> deleteFriend({int friendUserIdx}) async {
+    ResponseResult result =
+        await _apiClient.jsonDelete('/friendDelete/${friendUserIdx}');
+    return result.json;
+  }
 }

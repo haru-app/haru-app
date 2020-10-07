@@ -73,66 +73,11 @@ class _FriendsRequestListTile extends StatelessWidget {
                       style: TextStyle(fontSize: 17),
                     ),
                     SizedBox(
-                      width: 15,
+                      width: 20,
                     ),
-                    Row(
-                      children: [
-                        ButtonTheme(
-                          disabledColor: Colors.blue,
-                          minWidth: 30,
-                          height: 25,
-                          child: RaisedButton(
-                            onPressed: () async {
-                              FriendRequestService friendRequestservice =
-                                  FriendRequestService(context: context);
-                              await friendRequestservice.allowFriendRequest(
-                                  friendUserIdx: friendRequest['userIdx']);
-                              AlertBar(
-                                      type: AlertType.success,
-                                      message: '수락되었습니다.',
-                                      context: context)
-                                  .show();
-                              return;
-                              _FriendsRequestListTile(friendRequest);
-                            },
-                            child: Text(
-                              '수락',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        ButtonTheme(
-                          minWidth: 30,
-                          height: 25,
-                          child: RaisedButton(
-                            onPressed: () async {
-                              FriendRequestService friendRequestservice =
-                                  FriendRequestService(context: context);
-                              print(friendRequest['userIdx']);
-                              await friendRequestservice.rejectFriendRequest(
-                                  friendUserIdx: friendRequest['userIdx']);
-                              AlertBar(
-                                      type: AlertType.error,
-                                      message: '거절되었습니다.',
-                                      context: context)
-                                  .show();
-                              return;
-                            },
-                            child: Text(
-                              '거절',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                    raisedButton(
+                      friendRequest: friendRequest,
+                    )
                   ],
                 ),
               ],
@@ -140,6 +85,80 @@ class _FriendsRequestListTile extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class raisedButton extends StatefulWidget {
+  final dynamic friendRequest;
+  raisedButton({Key key, @required this.friendRequest}) : super(key: key);
+  @override
+  _raisedButtonState createState() => _raisedButtonState();
+}
+
+class _raisedButtonState extends State<raisedButton> {
+  bool isEnabled = true;
+
+  disableButton() {
+    setState(() {
+      isEnabled = false;
+    });
+  }
+
+  allowButton() async {
+    FriendRequestService friendRequestservice =
+        FriendRequestService(context: context);
+    await friendRequestservice.allowFriendRequest(
+        friendUserIdx: widget.friendRequest['userIdx']);
+    AlertBar(type: AlertType.success, message: '수락되었습니다.', context: context)
+        .show();
+    disableButton();
+  }
+
+  rejectButton() async {
+    FriendRequestService friendRequestservice =
+        FriendRequestService(context: context);
+    await friendRequestservice.rejectFriendRequest(
+        friendUserIdx: widget.friendRequest['userIdx']);
+    AlertBar(type: AlertType.error, message: '거절되었습니다.', context: context)
+        .show();
+    disableButton();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        ButtonTheme(
+          disabledColor: Colors.blue,
+          minWidth: 30,
+          height: 25,
+          child: RaisedButton(
+            onPressed: isEnabled ? () => allowButton() : null,
+            child: Text(
+              '수락',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        ButtonTheme(
+          buttonColor: Colors.red,
+          minWidth: 30,
+          height: 25,
+          child: RaisedButton(
+            onPressed: isEnabled ? () => rejectButton() : null,
+            child: Text(
+              '거절',
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
