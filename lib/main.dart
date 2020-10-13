@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/router.dart';
 import 'package:haruapp/providers/code.dart';
+import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/providers/user.dart';
 import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/utils/config.dart';
@@ -22,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-          ChangeNotifierProvider<CodeProvider>(create: (_) => CodeProvider())
+          ChangeNotifierProvider<CodeProvider>(create: (_) => CodeProvider()),
+          ChangeNotifierProvider<SubPageProvider>(
+              create: (_) => SubPageProvider())
         ],
         child: MaterialApp(
           title: 'Haru',

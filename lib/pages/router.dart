@@ -7,4 +7,5 @@ final routes = {
   '/login': (BuildContext context) => LoginPage(),
   '/register': (BuildContext context) => RegisterPage(),
   '/main': (BuildContext context) => MainPage(),
+  '/my/diary-list': (BuildContext context) => MainPage(),
 };

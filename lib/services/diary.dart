@@ -15,7 +15,17 @@ class DiaryService {
 
   Future<dynamic> getDiaryList() async {
     ResponseResult result = await _apiClient.jsonGet('/diary');
-    print(result.json.length);
     return result.json;
+  }
+
+  Future<void> addDiary(
+      String diaryName, String publicRangeCode, String diaryIconCode) async {
+    print('request');
+    ResponseResult result = await _apiClient.jsonPost('/diary', body: {
+      'diaryName': diaryName,
+      'publicRangeCode': publicRangeCode,
+      'diaryIconCode': diaryIconCode
+    });
+    print('request');
   }
 }
