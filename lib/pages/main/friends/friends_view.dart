@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:haruapp/pages/main/friends/friends_diary.dart';
-import 'package:haruapp/pages/main/main.dart';
 import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/services/friend.dart';
 import 'package:haruapp/services/friend_request.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
-import 'package:haruapp/pages/main/setting/setting.dart';
-import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 import 'friends.dart';

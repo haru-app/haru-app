@@ -281,7 +281,7 @@ class _MyNoteBook extends StatelessWidget {
       onTap: () {},
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/my/diary-list');
+          Navigator.pushNamed(context, '/main/my/diary');
         },
         child: Container(
           padding: EdgeInsets.all(15.0),

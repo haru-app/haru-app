@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:haruapp/pages/main/friends/friends_view.dart';
 import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/services/user.dart';
-import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
