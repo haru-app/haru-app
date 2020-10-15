@@ -11,6 +11,12 @@ import 'friends/friends.dart';
 
 class MainPage extends StatelessWidget {
   int _currentIndex = 0;
+  PageController _pageController;
+
+  MainPage() {
+    _pageController = PageController();
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomNagivation =
@@ -21,8 +27,18 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         title: TopBar(),
       ),
-      body: [HomePage(), MyPage(), FriendsPage(), SettingPage()][_currentIndex],
-      bottomNavigationBar: BottomNavigation(),
+      body: SizedBox.expand(
+        child: PageView(
+          controller: _pageController,
+          children: <Widget>[
+            HomePage(),
+            MyPage(),
+            FriendsPage(),
+            SettingPage()
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigation(pageController: _pageController),
     );
   }
 }

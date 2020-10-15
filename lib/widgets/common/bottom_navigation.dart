@@ -4,6 +4,11 @@ import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
   int _currentIndex = 0;
+  PageController _pageController = null;
+
+  BottomNavigation({PageController pageController}) {
+    _pageController = pageController;
+  }
   @override
   Widget build(BuildContext context) {
     final bottomNagivation =
@@ -42,7 +47,11 @@ class BottomNavigation extends StatelessWidget {
       onTap: (index) {
         bottomNagivation.currentIndex = index;
         if (!(new RegExp(r'^\/main\/.+\/.+')
-            .hasMatch(ModalRoute.of(context).settings.name))) return;
+            .hasMatch(ModalRoute.of(context).settings.name))) {
+          _pageController.animateToPage(index,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+          return;
+        }
         Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
       },
     );
