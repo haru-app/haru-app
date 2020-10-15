@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:haruapp/pages/main/friends/friends_diary.dart';
 import 'package:haruapp/pages/main/main.dart';
+import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/services/friend.dart';
 import 'package:haruapp/services/friend_request.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
+import 'package:haruapp/pages/main/setting/setting.dart';
 import 'package:haruapp/widgets/common/bottom_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:haruapp/providers/user.dart';
+
+import 'friends.dart';
 
 class FriendsViewPage extends StatefulWidget {
   final dynamic friends;
@@ -81,7 +85,6 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
             ),
           ),
         ),
-        bottomNavigationBar: BottomBar(),
       ),
     );
   }
@@ -113,6 +116,9 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
   Widget friendsNoteList(BuildContext context) {
     var _setColor = Colors.black45;
     var _diaryDate = '2020-05-25';
+    var subPage = Provider.of<SubPageProvider>(context, listen: true);
+    dynamic data;
+
     return SafeArea(
       child: OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
@@ -123,7 +129,9 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
           children: List.generate(orientation == Orientation.portrait ? 9 : 10,
               (position) {
             return GestureDetector(
-              onTap: () {},
+              onTap: () {
+                subPage.setPage(SubPage.friendsDiary, data);
+              },
               child: Container(
                 padding: EdgeInsets.all(15.0),
                 child: Column(

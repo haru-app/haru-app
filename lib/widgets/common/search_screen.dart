@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:haruapp/pages/main/friends/friends_view.dart';
+import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/services/user.dart';
+import 'package:haruapp/widgets/common/bottom_bar.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -35,12 +39,14 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(10),
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                ),
               ),
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -112,15 +118,23 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               Container(
-                color: Colors.white,
-                padding: EdgeInsets.fromLTRB(5, 0, 5, 10),
+                  child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
                 child: ListView.builder(
+                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
-                      return _UserList(userList[index]);
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _UserList(userList[index]),
+                          Divider(),
+                        ],
+                      );
                     }),
-              )
+              ))
             ],
           ),
         ),
@@ -136,37 +150,27 @@ class _UserList extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    var subPage = Provider.of<SubPageProvider>(context, listen: true);
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FriendsViewPage(
-                      friends: userList,
-                    )));
+        subPage.setPage(SubPage.friendsView, userList);
       },
       child: SingleChildScrollView(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: [
-            Row(
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.black38,
-                  child: Icon(
-                    Icons.person,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(width: 20),
-                Text(
-                  userList['username'],
-                  style: TextStyle(fontSize: 20),
-                ),
-              ],
-            ),
-            SizedBox(height: 20)
+            ListTile(
+              title: Text(
+                userList['username'],
+                style: TextStyle(fontSize: 18),
+              ),
+              leading: Icon(
+                Icons.account_circle,
+                size: 38,
+              ),
+              trailing: Icon(Icons.arrow_forward),
+            )
           ],
         ),
       ),

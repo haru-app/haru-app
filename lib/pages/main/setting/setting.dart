@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:haruapp/pages/auth/login.dart';
 import 'package:haruapp/services/auth.dart';
+import 'package:haruapp/widgets/common/top_bar.dart';
 
 import 'package:provider/provider.dart';
 import 'package:haruapp/providers/user.dart';
@@ -10,6 +11,9 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: TopBar(),
+      ),
       body: ListView(
         children: <Widget>[
           Container(
