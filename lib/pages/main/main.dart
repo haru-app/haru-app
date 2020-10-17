@@ -27,17 +27,18 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         title: TopBar(),
       ),
-      body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          children: <Widget>[
-            HomePage(),
-            MyPage(),
-            FriendsPage(),
-            SettingPage()
-          ],
-        ),
-      ),
+      body: [HomePage(), MyPage(), FriendsPage(), SettingPage()][_currentIndex],
+//      body: SizedBox.expand(
+//        child: PageView(
+//          controller: _pageController,
+//          children: <Widget>[
+//            HomePage(),
+//            MyPage(),
+//            FriendsPage(),
+//            SettingPage()
+//          ],
+//        ),
+//      ),
       bottomNavigationBar: BottomNavigation(pageController: _pageController),
     );
   }
