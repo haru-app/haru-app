@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/providers/bottom_navigation.dart';
+import 'package:haruapp/providers/page.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
-  int _currentIndex = 0;
-  PageController _pageController = null;
-
-  BottomNavigation({PageController pageController}) {
-    _pageController = pageController;
-  }
   @override
   Widget build(BuildContext context) {
-    final bottomNagivation =
-        Provider.of<BottomNavigationProvider>(context, listen: true);
-    _currentIndex = bottomNagivation.currentIndex;
+    final pageProvider = Provider.of<PageProvider>(context, listen: true);
     return BottomNavigationBar(
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black38,
-      currentIndex: _currentIndex,
+      currentIndex: pageProvider.currentIndex,
       items: [
         BottomNavigationBarItem(
           label: 'Friends',
@@ -45,10 +37,10 @@ class BottomNavigation extends StatelessWidget {
         ),
       ],
       onTap: (index) {
-        bottomNagivation.currentIndex = index;
+        pageProvider.currentIndex = index;
         if (!(new RegExp(r'^\/main\/.+\/.+')
             .hasMatch(ModalRoute.of(context).settings.name))) {
-          _pageController.animateToPage(index,
+          pageProvider.pageController.animateToPage(index,
               duration: Duration(milliseconds: 300), curve: Curves.easeOut);
           return;
         }

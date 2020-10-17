@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/router.dart';
-import 'package:haruapp/providers/bottom_navigation.dart';
+import 'package:haruapp/providers/page.dart';
 import 'package:haruapp/providers/code.dart';
 import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/providers/user.dart';
@@ -27,8 +27,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<CodeProvider>(create: (_) => CodeProvider()),
           ChangeNotifierProvider<SubPageProvider>(
               create: (_) => SubPageProvider()),
-          ChangeNotifierProvider<BottomNavigationProvider>(
-              create: (_) => BottomNavigationProvider())
+          ChangeNotifierProvider<PageProvider>(create: (_) => PageProvider())
         ],
         child: MaterialApp(
           title: 'Haru',

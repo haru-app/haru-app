@@ -11,9 +11,7 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TopBar(),
-      ),
+      appBar: TopBar(),
       body: ListView(
         children: <Widget>[
           Container(

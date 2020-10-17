@@ -52,9 +52,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        appBar: AppBar(
-          title: TopBar(),
-        ),
+        appBar: TopBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

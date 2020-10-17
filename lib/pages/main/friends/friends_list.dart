@@ -35,9 +35,7 @@ class _FriendsListPageState extends State<FriendsListPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: AppBar(
-          title: TopBar(),
-        ),
+        appBar: TopBar(),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

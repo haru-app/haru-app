@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:haruapp/pages/main/home/home.dart';
 import 'package:haruapp/pages/main/my/my.dart';
 import 'package:haruapp/pages/main/setting/setting.dart';
-import 'package:haruapp/providers/bottom_navigation.dart';
+import 'package:haruapp/providers/page.dart';
 import 'package:haruapp/widgets/common/bottom_navigation.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 import 'package:provider/provider.dart';
@@ -10,18 +10,9 @@ import 'package:provider/provider.dart';
 import 'friends/friends.dart';
 
 class MainPage extends StatelessWidget {
-  int _currentIndex = 0;
-  PageController _pageController;
-
-  MainPage() {
-    _pageController = PageController();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final bottomNagivation =
-        Provider.of<BottomNavigationProvider>(context, listen: true);
-    _currentIndex = bottomNagivation.currentIndex;
+    final pageProvider = Provider.of<PageProvider>(context, listen: false);
 
     int changePageIndex =
         (ModalRoute.of(context).settings.arguments as dynamic) != null
@@ -29,22 +20,24 @@ class MainPage extends StatelessWidget {
                 as dynamic)['changePageIndex']
             : null;
 
-    if (changePageIndex != null) {
-      _pageController.dispose();
-      _pageController = new PageController(initialPage: changePageIndex);
+    if (pageProvider.pageController == null) {
+      pageProvider.pageController = PageController();
+    } else if (changePageIndex != null) {
+      if (pageProvider.pageController != null)
+        pageProvider.pageController.dispose();
+      pageProvider.pageController =
+          PageController(initialPage: changePageIndex);
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: TopBar(),
-      ),
+      appBar: TopBar(),
       // body: [HomePage(), MyPage(), FriendsPage(), SettingPage()][_currentIndex],
       body: SizedBox.expand(
         child: PageView(
-          controller: _pageController,
+          controller: pageProvider.pageController,
           onPageChanged: (value) {
-            if (value != _currentIndex) {
-              bottomNagivation.currentIndex = value;
+            if (value != pageProvider.currentIndex) {
+              pageProvider.currentIndex = value;
             }
           },
           children: <Widget>[
@@ -55,7 +48,7 @@ class MainPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigation(pageController: _pageController),
+      bottomNavigationBar: BottomNavigation(),
     );
   }
 }
