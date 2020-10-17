@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/widgets/common/bottom_navigation.dart';
 import 'package:haruapp/widgets/common/writing.dart';
 import 'package:haruapp/widgets/my/my_diary_top_bar.dart';
