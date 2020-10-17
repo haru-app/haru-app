@@ -52,7 +52,8 @@ class BottomNavigation extends StatelessWidget {
               duration: Duration(milliseconds: 300), curve: Curves.easeOut);
           return;
         }
-        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false,
+            arguments: {'changePageIndex': index});
       },
     );
   }

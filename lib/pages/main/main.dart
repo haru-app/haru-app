@@ -23,22 +23,38 @@ class MainPage extends StatelessWidget {
         Provider.of<BottomNavigationProvider>(context, listen: true);
     _currentIndex = bottomNagivation.currentIndex;
 
+    int changePageIndex =
+        (ModalRoute.of(context).settings.arguments as dynamic) != null
+            ? (ModalRoute.of(context).settings.arguments
+                as dynamic)['changePageIndex']
+            : null;
+
+    if (changePageIndex != null) {
+      _pageController.dispose();
+      _pageController = new PageController(initialPage: changePageIndex);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: TopBar(),
       ),
-      body: [HomePage(), MyPage(), FriendsPage(), SettingPage()][_currentIndex],
-//      body: SizedBox.expand(
-//        child: PageView(
-//          controller: _pageController,
-//          children: <Widget>[
-//            HomePage(),
-//            MyPage(),
-//            FriendsPage(),
-//            SettingPage()
-//          ],
-//        ),
-//      ),
+      // body: [HomePage(), MyPage(), FriendsPage(), SettingPage()][_currentIndex],
+      body: SizedBox.expand(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (value) {
+            if (value != _currentIndex) {
+              bottomNagivation.currentIndex = value;
+            }
+          },
+          children: <Widget>[
+            HomePage(),
+            MyPage(),
+            FriendsPage(),
+            SettingPage()
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigation(pageController: _pageController),
     );
   }
