@@ -15,9 +15,7 @@ class MyPage extends StatelessWidget {
                   bottom: BorderSide(color: Colors.black12, width: 5.0))),
           child: MyProfile(),
         ),
-        Expanded(
-          child: MyDiaryList(),
-        )
+        Expanded(child: MyDiaryList()),
       ],
     ));
   }

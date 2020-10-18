@@ -13,9 +13,9 @@ class MyProvider with ChangeNotifier {
   Future<void> getDiaryList({BuildContext context, isNotify = true}) async {
     DiaryService diaryService = DiaryService(context: context);
     print(isNotify);
-    await diaryService.getDiaryList().then((dynamic value) {
-      _diaryList = value;
-      if (isNotify) notifyListeners();
-    });
+    dynamic value = await diaryService.getDiaryList();
+    _diaryList = value;
+    if (isNotify) notifyListeners();
+    return value;
   }
 }
