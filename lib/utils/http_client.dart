@@ -51,11 +51,17 @@ class HttpClient extends BaseClient {
                 context: this._context)
             .show();
       }
-      if (response.statusCode == 401 && json['code'] == '1001') {
+      if (response.statusCode == 401 && json['code'] == 1001) {
         if (await AuthService(context: this._context).updateToken()) {
           return 'resend';
         } else {
-          //로그인 페이지로
+          Navigator.pushNamedAndRemoveUntil(
+              this._context, '/login', (route) => false);
+          AlertBar(
+                  type: AlertType.error,
+                  message: json['errorMessage'],
+                  context: this._context)
+              .show();
         }
       }
     }
