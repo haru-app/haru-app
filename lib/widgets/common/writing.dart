@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:haruapp/widgets/common/profile.dart';
 
 class Writing extends StatelessWidget {
+  dynamic _writing;
+
+  Writing({dynamic writing}) {
+    _writing = writing;
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

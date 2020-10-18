@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:haruapp/widgets/my/my_diary_list.dart';
+import 'package:haruapp/widgets/common/diary_list.dart';
 import 'package:haruapp/widgets/my/my_profile.dart';
 
 class MyPage extends StatelessWidget {
@@ -15,7 +15,7 @@ class MyPage extends StatelessWidget {
                   bottom: BorderSide(color: Colors.black12, width: 5.0))),
           child: MyProfile(),
         ),
-        Expanded(child: MyDiaryList()),
+        Expanded(child: DiaryList()),
       ],
     ));
   }

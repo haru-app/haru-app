@@ -13,7 +13,8 @@ class DiaryService {
     this._apiClient = HttpClient(type: 'api', context: _context);
   }
 
-  Future<dynamic> getDiaryList() async {
+  Future<dynamic> getDiaryList({int userIdx}) async {
+    //userIdx가 있으면 내꺼아닌거
     ResponseResult result = await _apiClient.jsonGet('/diary');
     return result.json;
   }

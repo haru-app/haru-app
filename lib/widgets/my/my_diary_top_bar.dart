@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:haruapp/providers/my.dart';
+import 'package:haruapp/providers/diary.dart';
 import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/services/diary.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
@@ -25,8 +25,8 @@ class _MyDiaryTopBarState extends State<MyDiaryTopBar> {
     final diary =
         (ModalRoute.of(context).settings.arguments as dynamic)['diary'];
 
-    final myProvider = Provider.of<MyProvider>(context, listen: false);
-    myProvider.getDiaryList(context: context, isNotify: false);
+    final diaryProvider = Provider.of<DiaryProvider>(context, listen: false);
+    diaryProvider.getDiaryList(context: context, isNotify: false);
 
     return AppBar(
       title: TopBarTitle(),
@@ -48,7 +48,7 @@ class _MyDiaryTopBarState extends State<MyDiaryTopBar> {
                           message: '일기장을 삭제했습니다.',
                           context: context)
                       .show();
-                  myProvider.getDiaryList(context: context);
+                  diaryProvider.getDiaryList(context: context);
                   break;
               }
             },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/services/diary.dart';
 
-class MyProvider with ChangeNotifier {
+class DiaryProvider with ChangeNotifier {
   dynamic _diaryList = [];
 
   dynamic get diaryList => _diaryList;

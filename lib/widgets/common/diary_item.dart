@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MyDiaryItem extends StatelessWidget {
-  dynamic diary;
-
-  MyDiaryItem(diary) {
-    this.diary = diary;
+class DiaryItem extends StatelessWidget {
+  dynamic _diary;
+  int _userIdx;
+  DiaryItem(diary, {int userIdx}) {
+    _diary = diary;
+    _userIdx = userIdx;
   }
 
   @override
@@ -12,8 +13,11 @@ class MyDiaryItem extends StatelessWidget {
     var _setColor = Colors.black45;
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/main/my/diary',
-            arguments: {'diary': diary});
+        if (_userIdx == null) {
+          Navigator.pushNamed(context, '/main/my/diary',
+              arguments: {'diary': _diary});
+          return;
+        }
       },
       child: Container(
         padding: EdgeInsets.all(15.0),
@@ -28,7 +32,7 @@ class MyDiaryItem extends StatelessWidget {
               height: 5,
             ),
             Text(
-              diary['diaryName'],
+              _diary['diaryName'],
               style: TextStyle(fontSize: 15),
             )
           ],

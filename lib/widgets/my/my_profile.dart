@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/providers/code.dart';
-import 'package:haruapp/providers/my.dart';
+import 'package:haruapp/providers/diary.dart';
 import 'package:haruapp/providers/user.dart';
 import 'package:haruapp/services/diary.dart';
 import 'package:haruapp/utils/validator.dart';
@@ -182,9 +182,9 @@ class _MyProfileState extends State<MyProfile> {
                           context: context)
                       .show();
 
-                  final myProvider =
-                      Provider.of<MyProvider>(context, listen: false);
-                  myProvider.getDiaryList(context: context);
+                  final diaryProvider =
+                      Provider.of<DiaryProvider>(context, listen: false);
+                  diaryProvider.getDiaryList(context: context);
                 },
               ),
               FlatButton(

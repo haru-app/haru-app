@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:haruapp/pages/router.dart';
-import 'package:haruapp/providers/my.dart';
+import 'package:haruapp/providers/diary.dart';
 import 'package:haruapp/providers/page.dart';
 import 'package:haruapp/providers/code.dart';
 import 'package:haruapp/providers/sub_page.dart';
@@ -29,14 +29,14 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<SubPageProvider>(
               create: (_) => SubPageProvider()),
           ChangeNotifierProvider<PageProvider>(create: (_) => PageProvider()),
-          ChangeNotifierProvider<MyProvider>(create: (_) => MyProvider())
+          ChangeNotifierProvider<DiaryProvider>(create: (_) => DiaryProvider())
         ],
         child: MaterialApp(
           title: 'Haru',
           theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: Colors.white,
-            //          accentColor: Colors.black,
+            accentColor: Colors.black,
             //          primarySwatch: Colors.blue,
           ),
           initialRoute: '/login',
