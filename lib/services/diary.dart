@@ -28,4 +28,8 @@ class DiaryService {
     });
     print('request');
   }
+
+  Future<void> removeDiary(int diaryIdx) async {
+    ResponseResult result = await _apiClient.jsonDelete('/diary/$diaryIdx');
+  }
 }

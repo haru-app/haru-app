@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/providers/my.dart';
+import 'package:haruapp/widgets/my/my_diary_item.dart';
 import 'package:provider/provider.dart';
 
 class MyDiaryList extends StatelessWidget {
@@ -16,42 +17,5 @@ class MyDiaryList extends StatelessWidget {
         }),
       );
     });
-  }
-}
-
-class MyDiaryItem extends StatelessWidget {
-  dynamic diary;
-
-  MyDiaryItem(diary) {
-    this.diary = diary;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var _setColor = Colors.black45;
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/main/my/diary');
-      },
-      child: Container(
-        padding: EdgeInsets.all(15.0),
-        child: Column(
-          children: <Widget>[
-            Icon(
-              Icons.import_contacts,
-              size: 75,
-              color: _setColor,
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              diary['diaryName'],
-              style: TextStyle(fontSize: 15),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }
