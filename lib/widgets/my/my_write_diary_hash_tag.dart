@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
-import 'package:haruapp/widgets/common/input_form.dart';
 
-class MyWriteDiaryHashTag extends StatefulWidget {
-  List<String> hashTagList = [];
+class MyDiaryWritingTag extends StatefulWidget {
+  List<String> value = [];
   @override
-  _MyWriteDiaryHashTagState createState() => _MyWriteDiaryHashTagState();
+  _MyDiaryWritingTagState createState() => _MyDiaryWritingTagState();
 }
 
-class _MyWriteDiaryHashTagState extends State<MyWriteDiaryHashTag> {
+class _MyDiaryWritingTagState extends State<MyDiaryWritingTag> {
   InputBox _input = InputBox(
     name: '#해쉬태그',
     inputType: InputType.STRING,
@@ -46,7 +45,7 @@ class _MyWriteDiaryHashTagState extends State<MyWriteDiaryHashTag> {
                               .show();
                           return;
                         }
-                        if (widget.hashTagList.indexOf(hashTag) != -1) {
+                        if (widget.value.indexOf(hashTag) != -1) {
                           AlertBar(
                                   type: AlertType.error,
                                   context: context,
@@ -54,7 +53,7 @@ class _MyWriteDiaryHashTagState extends State<MyWriteDiaryHashTag> {
                               .show();
                           return;
                         }
-                        widget.hashTagList.add(hashTag);
+                        widget.value.add(hashTag);
                         _input.value = '';
                       });
                     }))
@@ -67,12 +66,12 @@ class _MyWriteDiaryHashTagState extends State<MyWriteDiaryHashTag> {
             crossAxisAlignment: WrapCrossAlignment.center,
             runSpacing: 10,
             children: List<Widget>.generate(
-                widget.hashTagList.length,
+                widget.value.length,
                 (index) => Wrap(
                       children: [
                         SizedBox(width: 10),
                         Text(
-                          '#' + widget.hashTagList[index],
+                          '#' + widget.value[index],
                           style: TextStyle(fontSize: 20),
                         ),
                       ],

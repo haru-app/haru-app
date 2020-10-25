@@ -81,7 +81,7 @@ class HttpClient extends BaseClient {
     return super.put(this.uri(url: url),
         headers: headers,
         body: isJson
-            ? JsonEncoder().convert(parameterConvertor(body))
+            ? JsonEncoder(toEncodable).convert(body)
             : parameterConvertor(body),
         encoding: encoding);
   }
@@ -92,7 +92,7 @@ class HttpClient extends BaseClient {
     return super.post(this.uri(url: url),
         headers: headers,
         body: isJson
-            ? JsonEncoder().convert(parameterConvertor(body))
+            ? JsonEncoder(toEncodable).convert(body)
             : parameterConvertor(body),
         encoding: encoding);
   }
@@ -145,6 +145,7 @@ class HttpClient extends BaseClient {
       Encoding encoding}) async {
     Response response = await this.post(url,
         headers: headers, body: body, encoding: encoding, isJson: true);
+    print('sdgs');
     dynamic json = jsonDecode(utf8.decode(response.bodyBytes));
 
     final errorResult = await errorHandler(response: response, json: json);
@@ -191,5 +192,19 @@ class HttpClient extends BaseClient {
     });
 
     return convertParams;
+  }
+
+  dynamic toEncodable(value) {
+    dynamic result;
+    if (value is TimeOfDay) {
+      final now = new DateTime.now();
+      result = DateTime(now.year, now.month, now.day, value.hour, value.minute)
+          .toUtc()
+          .toString();
+    } else if (value is DateTime)
+      result = value.toUtc().toString();
+    else
+      result = value;
+    return result;
   }
 }

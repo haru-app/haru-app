@@ -6,12 +6,6 @@ import 'package:haruapp/widgets/common/diary_item.dart';
 import 'package:provider/provider.dart';
 
 class DiaryList extends StatelessWidget {
-  int _userIdx;
-
-  DiaryList({int userIdx}) {
-    _userIdx = userIdx;
-  }
-
   @override
   Widget build(BuildContext context) {
     DiaryProvider diaryProvider =
