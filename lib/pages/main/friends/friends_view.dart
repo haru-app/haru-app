@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/services/friend.dart';
 import 'package:haruapp/services/friend_request.dart';
+import 'package:haruapp/services/user.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
+import 'package:haruapp/widgets/common/bottom_navigation.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
-import 'package:provider/provider.dart';
-
-import 'friends.dart';
 
 class FriendsViewPage extends StatefulWidget {
-  final dynamic friends;
-  FriendsViewPage({Key key, @required this.friends}) : super(key: key);
-
   @override
   _FriendsViewPageState createState() => _FriendsViewPageState();
 }
@@ -24,30 +19,37 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    FriendService friendService = FriendService(context: context);
-    friendService
-        .getCheckFriend(friendUserIdx: widget.friends['userIdx'])
-        .then((dynamic value) {
+    Future.delayed(Duration.zero, () {
       setState(() {
-        friendList = [
-          {'frienduseridx': 'null'},
-          {'frienduseridx2': 'null'},
-          {'useridx': 'null'},
-          {'useridx2': 'null'}
-        ];
-        friendList = value;
+        Map<dynamic, dynamic> args = ModalRoute.of(context).settings.arguments;
+        FriendService friendService = FriendService(context: context);
+        friendService
+            .getCheckFriend(friendUserIdx: args['friends']['userIdx'])
+            .then((dynamic value) {
+          setState(() {
+            friendList = [
+              {'frienduseridx': 'null'},
+              {'frienduseridx2': 'null'},
+              {'useridx': 'null'},
+              {'useridx2': 'null'}
+            ];
+            friendList = value;
 
-        print('친구 요청리스트 : ');
-        print(friendList);
+            print('친구 요청리스트 : ');
+            print(friendList);
+          });
+        });
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    String username = widget.friends['username'];
-    int useridx = widget.friends['userIdx'];
+    final Map<dynamic, dynamic> args =
+        ModalRoute.of(context).settings.arguments;
+
+//    String username = args['friends']['username'];
+//    int useridx = args['friends']['userIdx'];
 
     return DefaultTabController(
       length: 4,
@@ -68,7 +70,9 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
                       itemCount: friendList.length,
                       itemBuilder: (context, index) {
                         return checkFriend(
-                            friendList[index], username, useridx);
+                            friendList[index],
+                            args['friends']['username'],
+                            args['friends']['userIdx']);
                       }),
                 ),
                 Container(
@@ -79,6 +83,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
             ),
           ),
         ),
+        bottomNavigationBar: BottomNavigation(),
       ),
     );
   }
@@ -110,8 +115,6 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
   Widget friendsNoteList(BuildContext context) {
     var _setColor = Colors.black45;
     var _diaryDate = '2020-05-25';
-    var subPage = Provider.of<SubPageProvider>(context, listen: true);
-    dynamic data;
 
     return SafeArea(
       child: OrientationBuilder(
@@ -124,7 +127,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
               (position) {
             return GestureDetector(
               onTap: () {
-                subPage.setPage(SubPage.friendsDiary, data);
+                Navigator.pushNamed(context, '/main/my/diary');
               },
               child: Container(
                 padding: EdgeInsets.all(15.0),
@@ -234,11 +237,23 @@ class checkFriend extends StatelessWidget {
                                 onPressed: () async {
                                   Navigator.pop(context);
                                   if (send == true) {
-                                    FriendRequestService friendRequestservice =
-                                        FriendRequestService(context: context);
-                                    await friendRequestservice
-                                        .allowFriendRequest(
-                                            friendUserIdx: userIdx);
+//                                    FriendRequestService friendRequestservice =
+//                                        FriendRequestService(context: context);
+//                                    await friendRequestservice
+//                                        .allowFriendRequest(
+//                                            friendUserIdx: userIdx);
+                                    print(userIdx);
+                                    print(friendList['useridx']);
+                                    UserService userNoticeservice =
+                                        UserService(context: context);
+                                    await userNoticeservice.sendNotice(
+                                      friendUserIdx: userIdx,
+                                      noticeTypeCode: 'F',
+//                                      noticeData: [
+//                                        {'id': 6, 'data': '친구 요청'}
+//                                      ],
+                                      //isCheck: false,
+                                    );
                                     AlertBar(
                                             type: AlertType.success,
                                             message: '친구 요청이 전송되었습니다.',

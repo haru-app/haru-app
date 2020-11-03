@@ -35,32 +35,31 @@ class _FriendsListPageState extends State<FriendsListPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: TopBar(),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(top: 10, right: 24),
-                  child: GestureDetector(
-                      onTap: () {
-                        friendsReqDialog(context);
-                      },
-                      child: Text(
-                        '친구 요청 확인',
-                        style: TextStyle(fontSize: 17, color: Colors.blue),
-                      )),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: Scaffold(body: _friendsListView(context)),
-                )
-              ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topRight,
+              padding: EdgeInsets.only(top: 10, right: 24),
+              child: GestureDetector(
+                  onTap: () {
+                    friendsReqDialog(context);
+                  },
+                  child: Text(
+                    '친구 요청 확인',
+                    style: TextStyle(fontSize: 17, color: Colors.blue),
+                  )),
             ),
-          ),
-        ));
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Scaffold(body: _friendsListView(context)),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 
   void friendsReqDialog(BuildContext context) {
@@ -113,10 +112,10 @@ class _FriendsList extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    var subPage = Provider.of<SubPageProvider>(context, listen: true);
     return GestureDetector(
       onTap: () {
-        subPage.setPage(SubPage.friendsView, friend);
+        Navigator.pushNamed(context, '/main/friends/view/diary',
+            arguments: <dynamic, dynamic>{'friends': friend});
       },
       child: Column(
         children: <Widget>[

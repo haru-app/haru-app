@@ -149,11 +149,10 @@ class _UserList extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    var subPage = Provider.of<SubPageProvider>(context, listen: true);
-
     return GestureDetector(
       onTap: () {
-        subPage.setPage(SubPage.friendsView, userList);
+        Navigator.pushNamed(context, '/main/friends/view/diary',
+            arguments: <dynamic, dynamic>{'friends': userList});
       },
       child: SingleChildScrollView(
         child: ListView(

@@ -22,13 +22,10 @@ class FriendsPage extends StatelessWidget {
         resultPage = FriendsListPage();
         break;
       case SubPage.friendsView:
-        resultPage = FriendsViewPage(friends: subPage.data);
+        resultPage = FriendsViewPage();
         break;
       case SubPage.friendsDiary:
         resultPage = FriendsDiary();
-        break;
-      case SubPage.searchScreen:
-        resultPage = SearchScreen();
         break;
       default:
         resultPage = FriendsListPage();
