@@ -55,7 +55,7 @@ class Writing extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             child: Text(
-                              DateFormat('dd MMM yyyy').format(DateTime.parse(
+                              DateFormat('MMM dd yyyy').format(DateTime.parse(
                                   writingList[index]['writingDate'])),
                               style: TextStyle(
                                 fontSize: 35,
