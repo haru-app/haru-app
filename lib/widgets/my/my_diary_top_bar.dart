@@ -92,7 +92,7 @@ class _MyDiaryTopBarState extends State<MyDiaryTopBar> {
                                 ),
                                 Row(
                                   children: [
-                                    Text('장준수 (asde@naver.com)'),
+                                    Text('심동근 (asde@naver.com)'),
                                     IconButton(
                                       icon: Icon(Icons.delete),
                                       onPressed: () {},
