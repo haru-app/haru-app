@@ -114,7 +114,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
 
   Widget friendsNoteList(BuildContext context) {
     var _setColor = Colors.black45;
-    var _diaryDate = '2020-05-25';
+    var _diaryDate = '일기장 테스트';
 
     return SafeArea(
       child: OrientationBuilder(
@@ -123,8 +123,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-          children: List.generate(orientation == Orientation.portrait ? 9 : 10,
-              (position) {
+          children: List.generate(4, (position) {
             return GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/main/my/diary');
@@ -142,7 +141,7 @@ class _FriendsViewPageState extends State<FriendsViewPage> {
                       height: 5,
                     ),
                     Text(
-                      _diaryDate,
+                      '$_diaryDate ${position + 1}',
                       style: TextStyle(fontSize: 15),
                     )
                   ],
