@@ -111,6 +111,7 @@ class RegisterPage extends StatelessWidget {
       name: '생일',
       inputType: InputType.DATE,
       validator: (String v) => Validator([vIsRequired()], v).validate(),
+      lastDate: DateTime.now(),
     );
     return InputForm(
         child: Column(children: <Widget>[

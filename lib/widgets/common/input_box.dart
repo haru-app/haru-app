@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-enum InputType { INT, STRING, DOUBLE, DATE, TIME, DATETIME }
+enum InputType { INT, STRING, DOUBLE, DATE, TIME, DATETIME, STRING_LINE }
 
 class InputBox extends StatefulWidget {
   final TextEditingController _controller = TextEditingController();
@@ -14,16 +14,32 @@ class InputBox extends StatefulWidget {
   TimeOfDay _time;
   Function _validator;
   bool _obscureText;
+  bool _isBorder;
+  int _maxLine;
+  DateTime _initialDate;
+  DateTime _firstDate;
+  DateTime _lastDate;
 
   InputBox(
       {@required String name,
       @required InputType inputType,
       Function validator,
-      bool obscureText}) {
+      bool obscureText,
+      bool isBorder,
+      int maxLine = 1,
+      DateTime initialDate,
+      DateTime firstDate,
+      DateTime lastDate}) {
     this._name = name;
     this._inputType = inputType;
     this._validator = validator;
     this._obscureText = obscureText == null ? false : obscureText;
+    this._isBorder = isBorder == null ? false : isBorder;
+    this._maxLine = maxLine;
+    _initialDate = initialDate == null ? DateTime.now() : initialDate;
+    _firstDate = firstDate == null ? DateTime(1900) : firstDate;
+    _lastDate = lastDate == null ? DateTime(2030) : lastDate;
+    print(_lastDate);
   }
 
   dynamic get value {
@@ -78,10 +94,19 @@ class _InputBoxState extends State<InputBox> {
       decoration: InputDecoration(
           labelText: this.widget._name,
           labelStyle: TextStyle(color: Colors.grey),
+          icon: this.widget._inputType == InputType.DATE
+              ? Icon(Icons.date_range)
+              : null,
           errorText: _errorText,
+          border: this.widget._isBorder
+              ? OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))
+              : null,
           focusedBorder:
               OutlineInputBorder(borderSide: BorderSide(color: Colors.grey))),
       obscureText: this.widget._obscureText,
+      maxLines: this.widget._inputType == InputType.STRING_LINE
+          ? this.widget._maxLine
+          : 1,
       onChanged: (String value) {
         String newString;
 
@@ -110,7 +135,9 @@ class _InputBoxState extends State<InputBox> {
       keyboardType: this.widget._inputType == InputType.INT ||
               this.widget._inputType == InputType.DOUBLE
           ? TextInputType.number
-          : TextInputType.text,
+          : this.widget._inputType == InputType.STRING_LINE
+              ? TextInputType.multiline
+              : TextInputType.text,
     );
   }
 
@@ -134,9 +161,9 @@ class _InputBoxState extends State<InputBox> {
       if (this.widget._inputType == InputType.DATE) {
         DateTime dateTime = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime(2030),
+          initialDate: widget._initialDate,
+          firstDate: widget._firstDate,
+          lastDate: widget._lastDate,
         );
         if (dateTime == null) return;
         this.widget._dateTime = dateTime;
@@ -153,9 +180,9 @@ class _InputBoxState extends State<InputBox> {
       } else if (this.widget._inputType == InputType.DATETIME) {
         DateTime dateTime = await showDatePicker(
           context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime(1900),
-          lastDate: DateTime(2030),
+          initialDate: widget._initialDate,
+          firstDate: widget._firstDate,
+          lastDate: widget._lastDate,
         );
         if (dateTime == null) return;
         TimeOfDay time = await showTimePicker(

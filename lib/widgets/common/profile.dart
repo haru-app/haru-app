@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatelessWidget {
+  String _username;
+  Profile({String username = '이름'}) {
+    _username = username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -25,7 +30,7 @@ class Profile extends StatelessWidget {
                     width: 15,
                   ),
                   Text(
-                    '이름',
+                    _username,
                     style: TextStyle(fontSize: 17),
                   )
                 ],

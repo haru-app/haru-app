@@ -1,36 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:haruapp/providers/sub_page.dart';
+import 'package:haruapp/providers/code.dart';
+import 'package:haruapp/providers/diary.dart';
+import 'package:haruapp/providers/user.dart';
+import 'package:haruapp/services/diary.dart';
+import 'package:haruapp/utils/config.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/dropdown_box.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:provider/provider.dart';
-import 'package:haruapp/providers/user.dart';
-import 'package:haruapp/services/diary.dart';
-import 'package:haruapp/providers/code.dart';
-
-class MyDiaryListPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Colors.black12, width: 5.0),
-                  bottom: BorderSide(color: Colors.black12, width: 5.0))),
-          child: MyProfile(),
-        ),
-        Expanded(
-          child: _MyNote(),
-        )
-      ],
-    ));
-  }
-}
+import 'package:url_launcher/url_launcher.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -43,6 +23,7 @@ class _MyProfileState extends State<MyProfile> {
   InputForm _inputForm;
   InputBox _nameInput;
   CodeProvider _code;
+  bool checkBox = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -92,9 +73,82 @@ class _MyProfileState extends State<MyProfile> {
                 child: Container(
                   child: Column(
                     children: <Widget>[
-                      Icon(
-                        Icons.bookmark_border,
-                        size: 35,
+                      GestureDetector(
+                        onTap: () async {
+                          checkBox = false;
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) =>
+                                  StatefulBuilder(builder:
+                                      (BuildContext context,
+                                          StateSetter setState) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        '스토리보드',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: [
+                                                Text('하루 일기장'),
+                                                new Checkbox(
+                                                    value: checkBox,
+                                                    onChanged: (bool value) {
+                                                      setState(() {
+                                                        print(value);
+                                                        checkBox = value;
+                                                      });
+                                                    }),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text('교환 일기장'),
+                                                new Checkbox(
+                                                  value: false,
+                                                  onChanged: (bool value) {},
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text('뉴 일기장'),
+                                                new Checkbox(
+                                                  value: false,
+                                                  onChanged: (bool value) {},
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                            child: Text('열기'),
+                                            onPressed: () async {
+                                              launch(
+                                                  'http://${Config.get()['url']['api']['base'] + Config.get()['url']['api']['last']}/pdf');
+                                              Navigator.pop(context);
+                                            }),
+                                        FlatButton(
+                                            child: Text('닫기'),
+                                            onPressed: () async {
+                                              Navigator.pop(context);
+                                            })
+                                      ],
+                                    );
+                                  }));
+                        },
+                        child: Icon(
+                          Icons.bookmark_border,
+                          size: 35,
+                        ),
                       ),
                     ],
                   ),
@@ -196,12 +250,17 @@ class _MyProfileState extends State<MyProfile> {
                       new DiaryService(context: context);
                   await diaryService.addDiary(
                       _nameInput.value, _publicRangeCode, _diaryIconCode);
+
                   Navigator.pop(context, '확인');
                   AlertBar(
                           type: AlertType.success,
                           message: '일기장을 추가했습니다.',
                           context: context)
                       .show();
+
+                  final diaryProvider =
+                      Provider.of<DiaryProvider>(context, listen: false);
+                  diaryProvider.getDiaryList(context: context);
                 },
               ),
               FlatButton(
@@ -229,79 +288,6 @@ class _MyProfileState extends State<MyProfile> {
             width: 3,
           )
         ],
-      ),
-    );
-  }
-}
-
-class _MyNote extends StatefulWidget {
-  @override
-  _MyNote_State createState() => _MyNote_State();
-}
-
-class _MyNote_State extends State<_MyNote> {
-  dynamic diaryList = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    DiaryService diaryService = DiaryService(context: context);
-    diaryService.getDiaryList().then((dynamic value) {
-      setState(() {
-        diaryList = value;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return OrientationBuilder(
-        builder: (BuildContext context, Orientation orientation) {
-      return GridView.count(
-        crossAxisCount: orientation == Orientation.portrait ? 3 : 5,
-        children: List.generate(diaryList.length, (position) {
-          return _MyNoteBook(diaryList[position]);
-        }),
-      );
-    });
-  }
-}
-
-class _MyNoteBook extends StatelessWidget {
-  dynamic diary;
-  _MyNoteBook(diary) {
-    this.diary = diary;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var _setColor = Colors.black45;
-    return GestureDetector(
-      onTap: () {},
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/main/my/diary');
-        },
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            children: <Widget>[
-              Icon(
-                Icons.import_contacts,
-                size: 75,
-                color: _setColor,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                diary['diaryName'],
-                style: TextStyle(fontSize: 15),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }

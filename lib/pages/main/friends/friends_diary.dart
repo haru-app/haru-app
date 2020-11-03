@@ -7,9 +7,7 @@ class FriendsDiary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TopBar(),
-      ),
+      appBar: TopBar(),
       body: Writing(),
       bottomNavigationBar: BottomNavigation(),
     );

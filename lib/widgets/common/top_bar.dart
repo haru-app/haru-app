@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:haruapp/providers/sub_page.dart';
-import 'package:haruapp/services/auth.dart';
-//import 'package:haruapp/widgets/common/notice_screen.dart';
-import 'package:haruapp/widgets/common/search_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:haruapp/widgets/common/top_bar_title.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget implements PreferredSizeWidget {
+  TopBar({
+    Key key,
+  })  : preferredSize = Size.fromHeight(kToolbarHeight),
+        super(key: key);
+
+  @override
+  final Size preferredSize; // default is 56.0
+
+  @override
+  _TopBarState createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
   @override
   Widget build(BuildContext context) {
-    final subPage = Provider.of<SubPageProvider>(context, listen: true);
-    dynamic data;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
