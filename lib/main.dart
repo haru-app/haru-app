@@ -7,6 +7,7 @@ import 'package:haruapp/providers/page.dart';
 import 'package:haruapp/providers/code.dart';
 import 'package:haruapp/providers/sub_page.dart';
 import 'package:haruapp/providers/user.dart';
+import 'package:haruapp/providers/writing.dart';
 import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/utils/config.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<SubPageProvider>(
               create: (_) => SubPageProvider()),
           ChangeNotifierProvider<PageProvider>(create: (_) => PageProvider()),
-          ChangeNotifierProvider<DiaryProvider>(create: (_) => DiaryProvider())
+          ChangeNotifierProvider<DiaryProvider>(create: (_) => DiaryProvider()),
+          ChangeNotifierProvider<WritingProvider>(
+              create: (_) => WritingProvider())
         ],
         child: MaterialApp(
           title: 'Haru',

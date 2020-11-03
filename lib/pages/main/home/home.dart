@@ -11,6 +11,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     body:
-    return Writing();
+    return Writing(all: true);
   }
 }

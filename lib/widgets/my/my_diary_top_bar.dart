@@ -4,6 +4,7 @@ import 'package:haruapp/providers/diary.dart';
 import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/services/diary.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
+import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/top_bar_title.dart';
 import 'package:provider/provider.dart';
 
@@ -50,10 +51,79 @@ class _MyDiaryTopBarState extends State<MyDiaryTopBar> {
                       .show();
                   diaryProvider.getDiaryList(context: context);
                   break;
+                case '멤버 관리':
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            '멤버 관리',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: [
+                                    Container(
+                                      child: InputBox(
+                                        name: '이메일',
+                                      ),
+                                      width: 230,
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.add),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                                Row(
+                                  children: [
+                                    Text('기훈 (kwhoon@naver.com)\n[수락 대기중]'),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('장준수 (asde@naver.com)'),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('김우빈 (kwebbeb@naver.com)'),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                                child: Text('닫기'),
+                                onPressed: () async {
+                                  Navigator.pop(context);
+                                })
+                          ],
+                        );
+                      });
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'일기장 수정', '일기장 삭제', '멤버 추가'}.map((String choice) {
+              return {'일기장 수정', '일기장 삭제', '멤버 관리'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),

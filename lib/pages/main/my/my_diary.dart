@@ -12,7 +12,10 @@ class MyDiaryPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigation(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/main/my/writeDiary');
+          Navigator.pushNamed(context, '/main/my/writeDiary', arguments: {
+            'diary':
+                (ModalRoute.of(context).settings.arguments as dynamic)['diary']
+          });
         },
         child: Icon(
           Icons.add,

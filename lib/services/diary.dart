@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:haruapp/providers/code.dart';
 import 'package:haruapp/utils/http_client.dart';
@@ -31,6 +33,32 @@ class DiaryService {
   }
 
   Future<void> removeDiary(int diaryIdx) async {
-    ResponseResult result = await _apiClient.jsonDelete('/diary/$diaryIdx');
+    await _apiClient.jsonDelete('/diary/$diaryIdx');
+  }
+
+  Future<void> addWriting(int diaryIdx, DateTime writingDate, String title,
+      String content, int score, List<String> writingTags) async {
+    ResponseResult result = await _apiClient.jsonPost('/writing', body: {
+      'diaryIdx': diaryIdx,
+      'writingDate': writingDate,
+      'title': title,
+      'content': content,
+      'score': score,
+      'writingTags': writingTags
+    });
+    print(result.json);
+  }
+
+  Future<dynamic> getWritingList(int diaryIdx) async {
+    ResponseResult result = await _apiClient
+        .jsonGet('/writing', parameters: {'diaryIdx': diaryIdx});
+    print(result.response.body);
+    return result.json;
+  }
+
+  Future<dynamic> getWritingListAll() async {
+    ResponseResult result = await _apiClient.jsonGet('/writing/all');
+    print(result.response.body);
+    return result.json;
   }
 }

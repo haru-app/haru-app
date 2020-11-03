@@ -3,12 +3,14 @@ import 'package:haruapp/providers/code.dart';
 import 'package:haruapp/providers/diary.dart';
 import 'package:haruapp/providers/user.dart';
 import 'package:haruapp/services/diary.dart';
+import 'package:haruapp/utils/config.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/dropdown_box.dart';
 import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -21,6 +23,7 @@ class _MyProfileState extends State<MyProfile> {
   InputForm _inputForm;
   InputBox _nameInput;
   CodeProvider _code;
+  bool checkBox = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -70,9 +73,82 @@ class _MyProfileState extends State<MyProfile> {
                 child: Container(
                   child: Column(
                     children: <Widget>[
-                      Icon(
-                        Icons.bookmark_border,
-                        size: 35,
+                      GestureDetector(
+                        onTap: () async {
+                          checkBox = false;
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) =>
+                                  StatefulBuilder(builder:
+                                      (BuildContext context,
+                                          StateSetter setState) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        '스토리보드',
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(
+                                              children: [
+                                                Text('하루 일기장'),
+                                                new Checkbox(
+                                                    value: checkBox,
+                                                    onChanged: (bool value) {
+                                                      setState(() {
+                                                        print(value);
+                                                        checkBox = value;
+                                                      });
+                                                    }),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text('교환 일기장'),
+                                                new Checkbox(
+                                                  value: false,
+                                                  onChanged: (bool value) {},
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text('뉴 일기장'),
+                                                new Checkbox(
+                                                  value: false,
+                                                  onChanged: (bool value) {},
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                            child: Text('열기'),
+                                            onPressed: () async {
+                                              launch(
+                                                  'http://${Config.get()['url']['api']['base'] + Config.get()['url']['api']['last']}/pdf');
+                                              Navigator.pop(context);
+                                            }),
+                                        FlatButton(
+                                            child: Text('닫기'),
+                                            onPressed: () async {
+                                              Navigator.pop(context);
+                                            })
+                                      ],
+                                    );
+                                  }));
+                        },
+                        child: Icon(
+                          Icons.bookmark_border,
+                          size: 35,
+                        ),
                       ),
                     ],
                   ),

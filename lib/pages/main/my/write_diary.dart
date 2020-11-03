@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:haruapp/providers/writing.dart';
+import 'package:haruapp/services/diary.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
 import 'package:haruapp/widgets/common/icon_seek_bar.dart';
@@ -6,17 +8,21 @@ import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:haruapp/widgets/my/my_write_diary_hash_tag.dart';
 import 'package:haruapp/widgets/my/my_write_diary_top_bar.dart';
+import 'package:provider/provider.dart';
 
 class WriteDiaryPage extends StatelessWidget {
   InputForm _inputForm;
   InputBox _writingDate;
   InputBox _title;
   InputBox _content;
+  IconSeekBar _score;
+  MyDiaryWritingTag _writingTag;
   @override
   Widget build(BuildContext context) {
     _inputForm = this.writeForm();
+
     return Scaffold(
-        appBar: MyWriteDiaryTopBar(onWriting: () {
+        appBar: MyWriteDiaryTopBar(onWriting: () async {
           if (!this._inputForm.validate()) {
             AlertBar(
                     type: AlertType.error,
@@ -25,6 +31,29 @@ class WriteDiaryPage extends StatelessWidget {
                 .show();
             return;
           }
+
+          DiaryService diaryService = DiaryService(context: context);
+          await diaryService.addWriting(
+              (ModalRoute.of(context).settings.arguments as dynamic)['diary']
+                  ['diaryIdx'],
+              _writingDate.value,
+              _title.value,
+              _content.value,
+              _score.value,
+              _writingTag.value);
+          Navigator.pop(context);
+
+          AlertBar(
+                  type: AlertType.success,
+                  message: '일기를 작성하셨습니다.',
+                  context: context)
+              .show();
+          WritingProvider writingProvider =
+              Provider.of<WritingProvider>(context, listen: false);
+          writingProvider.getWritingList(
+              context: context,
+              diaryIdx: (ModalRoute.of(context).settings.arguments
+                  as dynamic)['diary']['diaryIdx']);
         }),
         body: Padding(
           padding: const EdgeInsets.all(10),
@@ -53,6 +82,14 @@ class WriteDiaryPage extends StatelessWidget {
         validator: (String v) => Validator([vIsRequired()], v).validate(),
         isBorder: true,
         maxLine: 15);
+    _score = IconSeekBar(
+      icon: Icons.favorite,
+      blankIcon: Icons.favorite_border,
+      amount: 5,
+      initialScore: 3,
+    );
+    _writingTag = MyDiaryWritingTag();
+
     return InputForm(
         child: Column(children: <Widget>[
       _writingDate,
@@ -67,7 +104,7 @@ class WriteDiaryPage extends StatelessWidget {
       SizedBox(
         height: 25,
       ),
-      MyWriteDiaryHashTag(),
+      _writingTag,
       SizedBox(
         height: 25,
       ),
@@ -78,12 +115,7 @@ class WriteDiaryPage extends StatelessWidget {
             '오늘 하루는 어땠나요? ',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          IconSeekBar(
-            icon: Icons.favorite,
-            blankIcon: Icons.favorite_border,
-            amount: 5,
-            initialScore: 3,
-          )
+          _score
         ],
       )
     ]));
