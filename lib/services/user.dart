@@ -21,4 +21,19 @@ class UserService {
         await _apiClient.jsonGet('/user/search', parameters: parameters);
     return result.json;
   }
+
+  Future<dynamic> sendNotice({
+    int friendUserIdx,
+    String noticeTypeCode,
+    //dynamic noticeData,
+    // bool isCheck,
+  }) async {
+    ResponseResult result = await _apiClient.jsonPut('/user/notice', body: {
+      'friendUserIdx': friendUserIdx,
+      'noticeTypeCode': noticeTypeCode,
+      //'noticeData': noticeData,
+      // 'isCheck': isCheck,
+    });
+    return result.json;
+  }
 }

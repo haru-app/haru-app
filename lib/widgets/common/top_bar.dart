@@ -33,17 +33,14 @@ class TopBar extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  subPage.setPage(SubPage.searchScreen, data);
-//                  Navigator.push(context,
-//                      MaterialPageRoute(builder: (context) => SearchScreen()));
+                  Navigator.pushNamed(context, '/main/search');
                 },
                 iconSize: 40,
               ),
               IconButton(
                 icon: Icon(Icons.notifications),
                 onPressed: () {
-//                  Navigator.push(context,
-//                      MaterialPageRoute(builder: (context) => NoticeScreen()));
+                  Navigator.pushNamed(context, '/main/notice');
                 },
                 iconSize: 40,
               )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haruapp/widgets/common/bottom_navigation.dart';
 import 'package:haruapp/widgets/common/top_bar.dart';
 import 'package:haruapp/widgets/common/writing.dart';
 
@@ -10,6 +11,7 @@ class FriendsDiary extends StatelessWidget {
         title: TopBar(),
       ),
       body: Writing(),
+      bottomNavigationBar: BottomNavigation(),
     );
   }
 }
