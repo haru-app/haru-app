@@ -12,15 +12,15 @@ class BottomNavigation extends StatelessWidget {
       currentIndex: pageProvider.currentIndex,
       items: [
         BottomNavigationBarItem(
-          label: 'Friends',
+          label: 'Home',
           icon: Icon(
             Icons.home,
           ),
         ),
         BottomNavigationBarItem(
-          label: 'Friends',
+          label: 'MY',
           icon: Icon(
-            Icons.home,
+            Icons.account_circle,
           ),
         ),
         BottomNavigationBarItem(
@@ -30,7 +30,7 @@ class BottomNavigation extends StatelessWidget {
           ),
         ),
         BottomNavigationBarItem(
-          label: 'Friends',
+          label: 'Setting',
           icon: Icon(
             Icons.settings,
           ),
