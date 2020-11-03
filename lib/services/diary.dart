@@ -55,4 +55,10 @@ class DiaryService {
     print(result.response.body);
     return result.json;
   }
+
+  Future<dynamic> getWritingListAll() async {
+    ResponseResult result = await _apiClient.jsonGet('/writing/all');
+    print(result.response.body);
+    return result.json;
+  }
 }

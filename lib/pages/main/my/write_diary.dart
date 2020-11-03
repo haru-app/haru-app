@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:haruapp/providers/writing.dart';
 import 'package:haruapp/services/diary.dart';
 import 'package:haruapp/utils/validator.dart';
 import 'package:haruapp/widgets/common/alert_bar.dart';
@@ -7,6 +8,7 @@ import 'package:haruapp/widgets/common/input_box.dart';
 import 'package:haruapp/widgets/common/input_form.dart';
 import 'package:haruapp/widgets/my/my_write_diary_hash_tag.dart';
 import 'package:haruapp/widgets/my/my_write_diary_top_bar.dart';
+import 'package:provider/provider.dart';
 
 class WriteDiaryPage extends StatelessWidget {
   InputForm _inputForm;
@@ -40,6 +42,18 @@ class WriteDiaryPage extends StatelessWidget {
               _score.value,
               _writingTag.value);
           Navigator.pop(context);
+
+          AlertBar(
+                  type: AlertType.success,
+                  message: '일기를 작성하셨습니다.',
+                  context: context)
+              .show();
+          WritingProvider writingProvider =
+              Provider.of<WritingProvider>(context, listen: false);
+          writingProvider.getWritingList(
+              context: context,
+              diaryIdx: (ModalRoute.of(context).settings.arguments
+                  as dynamic)['diary']['diaryIdx']);
         }),
         body: Padding(
           padding: const EdgeInsets.all(10),
