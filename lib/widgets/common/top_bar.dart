@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:haruapp/services/auth.dart';
 import 'package:haruapp/widgets/common/top_bar_title.dart';
 
 class TopBar extends StatefulWidget implements PreferredSizeWidget {
